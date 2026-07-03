@@ -10,7 +10,7 @@ async function loadSidebar() {
     if (!sidebarContainer) return;
 
     const response =
-        await fetch("/components/sidebar.html");
+        await fetch("components/sidebar.html");
 
     const html =
         await response.text();
