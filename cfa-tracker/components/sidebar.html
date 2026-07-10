@@ -1,0 +1,100 @@
+<aside class="sidebar">
+
+    <h2>CFA Study</h2>
+
+    <nav>
+
+        <a href="./index.html">
+            Dashboard
+        </a>
+
+        <a href="./pages/study-plan.html">
+            Study Planner
+        </a>
+
+        <a href="./pages/revision-queue.html">
+            Revision Queue
+        </a>
+
+        <a href="./pages/subject-analytics.html">
+            Subject Analytics
+        </a>
+
+        <a href="./pages/topic-analytics.html">
+            Module Analytics
+        </a>
+
+        <a href="./pages/session-history.html">
+            Session History
+        </a>
+
+        <a href="./pages/weekly-planner.html">
+            Weekly Planner
+        </a>
+
+        <a href="./pages/error-log.html">
+            Error Log
+        </a>
+
+        <a href="./pages/settings.html">
+            Settings
+        </a>
+
+        <a href="https://www.cfainstitute.org/account"
+           target="_blank"
+           rel="noopener noreferrer">
+
+            CFA Institute
+
+        </a>
+<!--
+		<button onclick="resetAllData()" class="reset-btn">
+			Reset All Data
+		</button>
+-->
+    </nav>
+
+	<button onclick="openResetModal()" class="reset-btn">
+		Reset Data
+	</button>
+
+	<!-- RESET MODAL -->
+
+	<div id="resetModal" class="modal">
+
+		<div class="modal-content">
+
+			<h3>Delete Study Data</h3>
+
+			<label>
+				<input type="checkbox" id="resetSessions">
+				Sessions
+			</label>
+
+			<label>
+				<input type="checkbox" id="resetPlans">
+				Weekly Plans
+			</label>
+
+			<label>
+				<input type="checkbox" id="resetErrors">
+				Error Logs
+			</label>
+
+			<div class="modal-buttons">
+
+				<button onclick="confirmResetData()">
+					Delete Selected
+				</button>
+
+				<button onclick="closeResetModal()">
+					Cancel
+				</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</aside>

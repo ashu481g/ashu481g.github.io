@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Subject Analytics</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <div id="sidebarContainer"></div>
+
+    <main class="main-content">
+
+        <h1>Subject Analytics</h1>
+
+        <section class="chart-card">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Subject</th>
+                        <th>Total Hours</th>
+                        <th>Sessions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="subjectAnalyticsBody">
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="../js/core.js"></script>
+
+<script>
+
+renderSubjects();
+
+function renderSubjects() {
+
+    const sessions =
+        getData(STORAGE_KEYS.sessions);
+
+    const body =
+        document.getElementById(
+            "subjectAnalyticsBody"
+        );
+
+    if (sessions.length === 0) {
+
+        body.innerHTML = `
+            <tr>
+                <td colspan="3">
+                    No analytics available yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+    const analytics = {};
+
+    sessions.forEach(session => {
+
+        if (!analytics[session.subject]) {
+
+            analytics[session.subject] = {
+
+                minutes: 0,
+                sessions: 0
+
+            };
+
+        }
+
+        analytics[session.subject].minutes +=
+            session.durationMinutes;
+
+        analytics[session.subject].sessions++;
+
+    });
+
+    Object.keys(analytics)
+        .forEach(subject => {
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+
+                <td>${subject}</td>
+
+                <td>
+                    ${(analytics[subject].minutes/60)
+                        .toFixed(1)}
+                </td>
+
+                <td>
+                    ${analytics[subject].sessions}
+                </td>
+
+            `;
+
+            body.appendChild(row);
+
+        });
+
+}
+
+</script>
+<script src="/js/layout.js"></script>
+
+</body>
+
+</html>
