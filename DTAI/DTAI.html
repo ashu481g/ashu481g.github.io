@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DTAI Mid-Term — 3 Hour Study Guide</title>
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --paper:#fbfaf7;
+    --sir-bg:#eaf1fb;
+    --sir-line:#2054a8;
+    --sir-text:#0f2f5c;
+    --mine-bg:#eef7f2;
+    --mine-line:#1c7a53;
+    --mine-text:#0d4a31;
+    --qa-bg:#fdf3e3;
+    --qa-line:#b5730c;
+    --qa-text:#5c3d05;
+    --rule:#d8d3c8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:32px 24px 100px;}
+  h1{
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size:1.9rem;
+    margin-bottom:4px;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    color:#555;
+    font-size:0.95rem;
+    margin-bottom:20px;
+  }
+  .legend{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    font-family:'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size:0.82rem;
+    margin-bottom:28px;
+  }
+  .legend span{
+    padding:5px 10px;
+    border-radius:4px;
+    font-weight:700;
+  }
+  .legend .l-sir{background:var(--sir-bg);color:var(--sir-text);border-left:4px solid var(--sir-line);}
+  .legend .l-mine{background:var(--mine-bg);color:var(--mine-text);border-left:4px solid var(--mine-line);}
+  .legend .l-qa{background:var(--qa-bg);color:var(--qa-text);border-left:4px solid var(--qa-line);}
+
+  nav.toc{
+    font-family:'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size:0.85rem;
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:12px 16px;
+    margin-bottom:32px;
+    background:#fff;
+  }
+  nav.toc a{color:#2054a8; text-decoration:none; margin-right:14px;}
+  nav.toc a:hover{text-decoration:underline;}
+
+  h2{
+    font-family:'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size:1.35rem;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:6px;
+    margin-top:52px;
+  }
+  h3{
+    font-family:'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size:1.05rem;
+    margin-top:28px;
+    margin-bottom:8px;
+    color:#222;
+  }
+  .box{
+    border-radius:5px;
+    padding:12px 16px;
+    margin:10px 0;
+  }
+  .sir{
+    background:var(--sir-bg);
+    border-left:4px solid var(--sir-line);
+  }
+  .sir .tag{color:var(--sir-text); font-weight:700; font-size:0.72rem; font-family:'Trebuchet MS',sans-serif; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:4px;}
+  .mine{
+    background:var(--mine-bg);
+    border-left:4px solid var(--mine-line);
+  }
+  .mine .tag{color:var(--mine-text); font-weight:700; font-size:0.72rem; font-family:'Trebuchet MS',sans-serif; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:4px;}
+  .qa{
+    background:var(--qa-bg);
+    border-left:4px solid var(--qa-line);
+  }
+  .qa .tag{color:var(--qa-text); font-weight:700; font-size:0.72rem; font-family:'Trebuchet MS',sans-serif; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:4px;}
+  .qa .q{font-weight:700; margin-bottom:6px;}
+  .qa .a{margin:0;}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:14px 0;
+    font-size:0.92rem;
+  }
+  th,td{
+    border:1px solid var(--rule);
+    padding:8px 10px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{
+    background:#f1efe8;
+    font-family:'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size:0.85rem;
+  }
+  .hour-badge{
+    display:inline-block;
+    background:var(--ink);
+    color:#fff;
+    font-family:'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size:0.75rem;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:6px;
+  }
+  ul{margin-top:6px;}
+  li{margin-bottom:4px;}
+  .divider{border:none;border-top:1px dashed var(--rule);margin:40px 0;}
+  .footer-note{
+    font-family:'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size:0.85rem;
+    color:#555;
+    background:#fff;
+    border:1px solid var(--rule);
+    padding:14px 16px;
+    border-radius:6px;
+    margin-top:50px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>DTAI Mid-Term — 3 Hour Study Guide</h1>
+  <div class="subtitle">Sessions 1–8 · Closed book · Binder pg 1–133</div>
+
+  <div class="legend">
+    <span class="l-sir">📘 Sir taught this — exact term/definition</span>
+    <span class="l-mine">🧭 Added context — unpacking why it matters</span>
+    <span class="l-qa">✏️ Self-test — question + answer</span>
+  </div>
+
+  <nav class="toc">
+    <strong>Jump to:</strong>
+    <a href="#hour1">Hour 1 — Foundations</a>
+    <a href="#hour2">Hour 2 — Customer & Porter</a>
+    <a href="#hour3">Hour 3 — Platforms & Architecture</a>
+    <a href="#glossary">Glossary</a>
+  </nav>
+
+  <h2 id="hour1"><span class="hour-badge">HOUR 1</span><br>Foundations — What is Digital? What is Transformation?</h2>
+
+  <h3>The three eras</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    Craftsmanship → Industrial → Digital. Source of value shifts: <b>individual skill → products/services (large, distributed) → information</b>. Reference points: <i>Wealth of Nations</i>, <i>Modern Times</i> (Chaplin).
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Chaplin's <i>Modern Times</i> is a satire of industrial-era mechanization — workers reduced to repetitive motion on an assembly line. It's the visual shorthand for "scale over skill." The digital era flips this again: value stops coming from owning production scale and starts coming from owning <b>information about the customer</b>.
+  </div>
+
+  <h3>Defining "Digital" and "Transformation" — use verbatim</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    <b>Digital</b> = a General Purpose Technology (GPT) → always shows a <b>J-curve</b>.<br>
+    <b>Transformation</b> = <b>"marked change"</b> that <b>"removes fundamental conflicts or constraints."</b><br>
+    Digital brings marked change every <b>~5 years</b> (contrast reference years: 1775, 1900, 2002).
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    J-curve = productivity often <i>dips or flatlines</i> right after a GPT arrives (electricity, computers, AI all did this), because the tech alone isn't enough — you need complementary changes in process, skills, and org design before the payoff shows up. The "every 5 years" point is really about <b>pace</b>: industrial-era shifts took a century to play out; digital-era shifts compress that into a handful of years, which is why the management challenge is different in kind, not just degree.
+  </div>
+
+  <h3>Two types of transformation</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    <table>
+      <tr><th>Operational transformation</th><th>Strategic transformation</th></tr>
+      <tr><td>Changes <b>KPIs</b></td><td>Changes <b>value proposition</b> and/or <b>competitive set</b></td></tr>
+    </table>
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Quick test to classify any example: ask "did the company just get better at the same game (operational), or are they now playing a <i>different</i> game against <i>different</i> rivals (strategic)?"
+  </div>
+
+  <h3>IT-led Transformation vs. Digital Transformation</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    Progression: <b>Craftsmanship → Industrialization → Digitization</b>. IT-led transformation optimizes existing processes; digital transformation changes the value proposition itself, enabled by <b>dematerialization</b>.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Easy trap in the exam: people assume "digitizing" a process (e.g. moving paper forms to a portal) <i>is</i> digital transformation. Per your professor's framing, that's still just <b>digitization/IT-led</b> — it's optimizing the existing pipe, not changing the value proposition or who you compete with.
+  </div>
+
+  <h3>Dematerialization + ARPU</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    Dematerialization is why digital enables <b>faster changes to the competitive set</b>. <b>ARPU</b> = Average Realization/Revenue Per User — becomes the central metric once value shifts to information.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Dematerialization = swapping a physical constraint for a software/data-based one. A taxi company bound by a fleet of owned cars can only grow at the pace it buys cars; a dematerialized version (a ride app) can reconfigure supply, pricing, and even what "counts" as a competitor almost instantly, because none of that is locked into physical assets anymore. That's the mechanical reason strategic transformation can happen in years, not decades.
+  </div>
+
+  <div class="box qa">
+    <span class="tag">Self-test — Hour 1</span>
+    <p class="q">Q1. Define transformation in one line, in your professor's exact words.</p>
+    <p class="a"><b>A:</b> "Marked change that removes fundamental conflicts or constraints."</p>
+    <p class="q">Q2. Give an example distinguishing operational vs. strategic transformation.</p>
+    <p class="a"><b>A:</b> A bank digitizing its loan-approval workflow to cut turnaround time = <b>operational</b> (KPI: processing time). The same bank turning itself into an open API-based lending marketplace that partners with fintechs and competes with non-banks = <b>strategic</b> (value proposition and competitive set both change).</p>
+    <p class="q">Q3. Why does dematerialization enable faster change in the competitive set?</p>
+    <p class="a"><b>A:</b> Because removing the physical/material constraint means a firm can reconfigure its offering through software and data alone, without rebuilding physical infrastructure — so it can pivot who it competes against far faster than an industrial-era firm tied to physical assets.</p>
+  </div>
+
+  <hr class="divider">
+
+  <h2 id="hour2"><span class="hour-badge">HOUR 2</span><br>Customer Frameworks + Porter's Failure + Digital Matrix</h2>
+
+  <h3>CJTBD, Customer Journey, Jobs</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    <b>CJTBD</b> (Customer Jobs To Be Done) + <b>Customer Journey</b>. Because of digital, jobs become <b>measurable/evaluable</b> — <b>Functional</b>, <b>Emotional</b>, <b>Social</b> jobs. Use <b>5-Why</b> to tell symptom from problem. Reference: Lemonade CEO interview.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    The "because of digital, jobs become measurable" point is the key addition — in the industrial era you could infer emotional/social motivations but rarely measure them directly. Digital instrumentation (clickstreams, sentiment data, usage patterns) lets a firm actually quantify how well it's satisfying the emotional/social job, not just the functional one — which is why personalization and journey-redesign became possible business strategies, not just marketing ideas.
+  </div>
+
+  <h3>The QSR / aggregator example</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    A single QSR (restaurant) cannot deliver a large, fast, combined set of options — a platform aggregator can.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    This is the same "conflicts/constraints" idea from Hour 1 applied concretely: the constraint is "I want variety AND speed," which one restaurant physically cannot solve alone. A dematerialized aggregator layer solves it by orchestrating many restaurants at once — a clean example to drop into an essay answer about "how digital removes fundamental constraints in a customer journey."
+  </div>
+
+  <h3>Industrial customer vs. Digital customer</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    <table>
+      <tr><th>Dimension</th><th>Industrial</th><th>Digital</th></tr>
+      <tr><td>Customer role</td><td>Passive recipient</td><td>Active co-creator ("Prosumer")</td></tr>
+      <tr><td>Design focus</td><td>A-list actors</td><td>Average / long-tail actor</td></tr>
+      <tr><td>Experience staged by</td><td>The firm</td><td>The community</td></tr>
+      <tr><td>Experience controlled by</td><td>Managerial hierarchy</td><td>Algorithms</td></tr>
+      <tr><td>Capabilities reside</td><td>Within org & supply chain</td><td>Outside org, in ecosystem</td></tr>
+      <tr><td>What defines the industry</td><td>Production system</td><td>Customer journey</td></tr>
+    </table>
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Read this table as one continuous story, not six separate facts: once customers co-create (row 1) instead of just consuming, firms have to design for the "average" long-tail user rather than a curated elite (row 2), which only works if the experience is staged by a community and run by algorithms rather than managers (rows 3–4) — and that only works if the org draws capability from an outside ecosystem (row 5). The last row is the punchline: once all that's true, industry boundaries stop being defined by what's produced and start being defined by the journey being served.
+  </div>
+
+  <h3>Why Porter's Five Forces "failed miserably"</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    Porter's model assumes the <b>production system defines the industry</b>. Porter works for <b>positioning</b>, not efficiency — and efficiency/advantage in the digital world comes from somewhere else.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Porter's Five Forces needs a fixed, bounded industry to analyze rivals/suppliers/buyers within. If the customer journey (not the production system) defines the industry, the boundary itself keeps moving — a payments app can suddenly be "in" the grocery industry, the travel industry, and the lending industry simultaneously, just by extending the journey it owns. A tool built to analyze a fixed structure breaks when the structure is fluid — that's the "failed miserably" point.
+  </div>
+
+  <h3>The Digital Matrix (Venkatraman) — 3 Players × 3 Phases</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    <table>
+      <tr><th></th><th>Experimentation at the Edge</th><th>Collision at the Core</th><th>Reinvention at the Root</th></tr>
+      <tr><td><b>Digital Giants</b></td><td>test new lines at the periphery</td><td>push into incumbents' core</td><td>reinvent the industry's root logic</td></tr>
+      <tr><td><b>Industry Incumbents</b></td><td>experiment with digital add-ons</td><td>collide directly with digital giants</td><td>must reinvent their own root model</td></tr>
+      <tr><td><b>Tech Entrepreneurs</b></td><td>experiment at the edge</td><td>scale up to collide with incumbents</td><td>some reinvent the industry's root</td></tr>
+    </table>
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Frame this as a race with three runners on three tracks at once, not a neat linear roadmap for one company. A good exam move: pick a real Indian example (e.g., Reliance Jio as incumbent-turned-giant colliding with global tech players at the core, then reinventing telecom's root model into a super-app/ecosystem play) and place it explicitly into one cell of this grid.
+  </div>
+
+  <h3>Org: Complex Adaptive System + Kinetic Management</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    Org → <b>Complex Adaptive System</b>, not a large monolithic system. New term: <b>Kinetic Management</b>.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    A complex adaptive system is made of many semi-autonomous units that sense and respond locally rather than waiting for central instructions — think of it as many small teams each adjusting in real time, versus one big machine executing a single master plan. "Kinetic management" is the leadership style that fits this: managing continuous motion as the normal state, rather than planning in fixed annual cycles and treating change as an exception to that plan.
+  </div>
+
+  <h3>Orchestrator / Producer / Enabler</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    Power sector: <b>Genco</b> (NTPC, NHPC — PPA) → <b>TransCo</b> (PGCIL) → <b>DISCOM</b> (UPPCL, Adani) → regulated by <b>SECI/SERC</b>. Customer wants 24×7, low price, solar. Same roles in Amazon Retail: orchestrator, sellers, mobile.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Three generic roles to reuse across any case: <b>Orchestrator</b> (coordinates the end-to-end journey — Amazon, or a national grid operator), <b>Producer</b> (creates the underlying good — a power generator, or a third-party seller), <b>Enabler</b> (provides supporting infrastructure — transmission lines, or mobile/logistics rails). If an exam question gives you an unfamiliar industry, mapping it onto these three roles is a fast, structured way to start an answer.
+  </div>
+
+  <div class="box qa">
+    <span class="tag">Self-test — Hour 2</span>
+    <p class="q">Q1. Why did Porter's Five Forces fail in the digital context?</p>
+    <p class="a"><b>A:</b> It assumes the production system fixes the industry's boundaries, so it can analyze rivals within a stable structure. In digital markets the customer journey defines the industry instead, so boundaries shift constantly — a tool designed for static structure breaks down against a moving target.</p>
+    <p class="q">Q2. Place a real company into one cell of the Digital Matrix.</p>
+    <p class="a"><b>A:</b> Example: Reliance Jio as an <b>Industry Incumbent</b> at the <b>Collision at the Core</b> stage — directly competing with global digital giants (WhatsApp Pay, Google Pay) in payments while trying to reinvent telecom's root model via a super-app ecosystem strategy.</p>
+    <p class="q">Q3. How does Kinetic Management relate to the Complex Adaptive System idea?</p>
+    <p class="a"><b>A:</b> A Complex Adaptive System org is made of autonomous units that self-organize and respond to signals rather than a rigid hierarchy executing one plan. Kinetic Management is the leadership approach built for that reality — managing constant motion and adaptation as the norm, rather than running a static annual plan and treating change as an exception.</p>
+  </div>
+
+  <hr class="divider">
+
+  <h2 id="hour3"><span class="hour-badge">HOUR 3</span><br>Platforms, Ecosystems, DPI, Architecture</h2>
+
+  <h3>Pipeline vs. Platform vs. Ecosystem</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    Pipelines are closed, guarded by <b>SLA</b>; Platform/Ecosystem is open, governed by open contracts. Platform makes value by <b>matchmaking</b> — <b>Transaction Platform</b> (Amazon) vs. <b>Innovation Platform</b> (Apple's App Store). Ecosystem makes value through <b>combination</b> — <b>Multi-Actor</b> (Alexa), <b>Multi-Product</b> (Apple's product line).
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    "SLA vs. open contract" is really about control: a pipeline firm dictates exact terms to a captive supplier; a platform/ecosystem firm sets open rules that any qualifying third party can plug into voluntarily. Transaction platforms match two sides for a one-time exchange (buyer↔seller on Amazon); innovation platforms let others build durable new products on top (developers building apps for the App Store) — the difference is whether the relationship ends after one exchange or compounds over time.
+  </div>
+
+  <h3>Product differentiation limits vs. digital "both/and"</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    Product-based companies can only be <b>either</b> a product differentiator <b>or</b> a cost differentiator. Digital companies don't follow this restriction — they can be <b>both</b>.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    This is Porter's generic-strategy trade-off (differentiation vs. cost leadership — pick one or get "stuck in the middle") being broken by network/platform economics. Because platform costs are shared across a huge base of participants (marginal cost per extra user ≈ 0) while data enables per-user personalization (differentiation), the same firm can drive costs down AND tailor the experience up — something a single-factory manufacturer structurally cannot do.
+  </div>
+
+  <h3>Digital Public Infrastructure (DPI) / India Stack</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    <b>JAM Trinity</b>: Jan Dhan + Aadhaar + Mobile. <b>DPI</b>: Aadhaar, <b>UPI</b>, DigiLocker, DigiYatra. Nandan Nilekani — contrast: Google (private Payment Service Provider) vs. GOI/NPCI infrastructure (public good). Guest lecture: Anirban Sinha — Digital Energy Grid, India Stack, Open Networks.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    DPI is the orchestrator/producer/enabler logic (Hour 2) scaled up to a whole country: the government builds and holds the open "rails" (identity, payments, documents) as a public good, and then private firms — banks, fintechs, even Google — act as producers/enablers riding on top of that shared infrastructure instead of each building their own closed identity or payment system. The energy-grid guest lecture is the same idea applied to power distribution instead of finance.
+  </div>
+
+  <h3>Ingredients of Digital Transformation</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    <b>Ingredient 1 — Digital strategies:</b>
+    <table>
+      <tr><th>Customer Engagement Strategy</th><th>Digitized Solutions Strategy</th></tr>
+      <tr><td>Build loyalty/trust via personalized, integrated experience; relies on analytics on customer data; seamless omnichannel; ongoing two-way communication</td><td>Reformulate value prop combining products+services+data; R&D anticipates (not just responds to) needs; often adds new data collection (sensors); can shift revenue to recurring service revenue</td></tr>
+    </table>
+    <b>Ingredient 2 — Operational backbone.</b> <b>Ingredient 3 — Digital Services Platform (API)</b>, mapped via the <b>Business Model Canvas</b>.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Think of these three ingredients as layers stacked on each other: Ingredient 1 is <i>what</i> you're promising the customer, Ingredient 2 is the internal machinery that actually delivers on that promise reliably, and Ingredient 3 is the technical layer (APIs) that lets outside partners plug into that machinery. A firm can have a great strategy (Ingredient 1) and still fail at transformation if Ingredient 2 or 3 is missing — this is a good structure for an essay answer on "why did Company X's digital transformation stall."
+  </div>
+
+  <h3>Incumbent challenges (guest lecture slide)</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    <ul>
+      <li>Transform from manufacturing focus → service-oriented enterprise</li>
+      <li>Pursue a collaborative business model combining core competencies with partner network's skills</li>
+      <li>Develop a flexible partner network reshapeable for new products/markets/channels</li>
+      <li>Manage a transition that changes manufacturing base, supply chain, distribution, sales & marketing</li>
+      <li>Leverage ICT to quickly integrate capabilities of multiple diverse partners</li>
+    </ul>
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    If a question asks "what challenges does an incumbent face in digital transformation," this five-point list is a ready-made structured answer — notice all five are really the same underlying tension: the incumbent's old strength (an owned, controlled, linear supply chain) is precisely what has to be dismantled and replaced with an open, flexible, partner-based model.
+  </div>
+
+  <h3>Architecture: Monolithic → Microservices</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    Client-server / three-tier (monolithic) → <b>Mesh App and Service-oriented Architecture</b>. <b>Conway's Law</b>. Tools: <b>Docker, Kubernetes, Kafka</b>, Google Cloud Pub/Sub, Microsoft Azure. Migration: monolithic → microservices.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Conway's Law is the load-bearing idea here: it says a system's architecture will mirror the communication structure of the org that built it. So a company can't just "buy microservices" — if its teams are still organized as one big monolithic department, they'll keep producing tightly-coupled, monolithic software regardless of the tools used. One line on each tool: <b>Docker</b> packages a service to run consistently anywhere; <b>Kubernetes</b> manages many containers at scale (deploy/scale/heal); <b>Kafka</b> lets services talk to each other asynchronously via event streams; cloud platforms (Google Cloud Pub/Sub, Azure) provide this infrastructure as a managed service so firms don't have to run it themselves.
+  </div>
+
+  <h3>External API examples</h3>
+  <div class="box sir">
+    <span class="tag">Sir taught</span>
+    <b>Stripe API</b> (external), <b>Twilio API</b> (external), <b>Google Maps API</b>.
+  </div>
+  <div class="box mine">
+    <span class="tag">Added context</span>
+    Each takes one complex internal capability (payments, messaging, mapping) and exposes it as a simple building block any outside company can plug into — the clearest, most concrete example of "dematerialization + platform logic" you can cite, since it's pure API-as-product with no ambiguity.
+  </div>
+
+  <div class="box qa">
+    <span class="tag">Self-test — Hour 3</span>
+    <p class="q">Q1. Differentiate Transaction Platform vs. Innovation Platform, with an example each.</p>
+    <p class="a"><b>A:</b> A Transaction Platform matches two sides for a one-off exchange — e.g. Amazon matching a buyer and a seller. An Innovation Platform lets outside parties build new, durable products on top of the core platform — e.g. Apple's App Store, where developers build apps that persist and compound over time.</p>
+    <p class="q">Q2. Why can digital/platform companies pursue both cost and product differentiation at once, unlike traditional manufacturers?</p>
+    <p class="a"><b>A:</b> Because platform economics spread infrastructure costs across a large shared base of participants (driving marginal cost toward zero) while data enables per-user personalization (driving differentiation up) — the two no longer trade off against each other the way they do for a single-factory manufacturer stuck choosing one generic strategy.</p>
+    <p class="q">Q3. What is Conway's Law, and why does it matter for adopting microservices?</p>
+    <p class="a"><b>A:</b> Conway's Law says an organization's system architecture mirrors its communication/team structure. So a firm can't adopt microservices just by buying new tools — it typically must also restructure into small, autonomous, cross-functional teams; otherwise a monolithic org keeps producing tightly-coupled, monolithic systems regardless of the technology chosen.</p>
+  </div>
+
+  <hr class="divider">
+
+  <h2 id="glossary">Rapid-Fire Glossary (last 10 minutes)</h2>
+  <div class="box sir">
+    <span class="tag">Sir's exact terms — say the definition out loud</span>
+    <ul>
+      <li><b>Dematerialization</b> — converting a physical constraint into a data/software-based one</li>
+      <li><b>J-curve</b> — adoption pattern of general-purpose technologies</li>
+      <li><b>CJTBD</b> — customer wants a job done, not a product</li>
+      <li><b>Prosumer</b> — customer as active co-creator, not passive recipient</li>
+      <li><b>Kinetic Management</b> — management built around constant motion, not static planning</li>
+      <li><b>Complex Adaptive System</b> — self-organizing org structure vs. monolithic hierarchy</li>
+      <li><b>Orchestrator / Producer / Enabler</b> — the three generic ecosystem roles</li>
+      <li><b>Transaction vs. Innovation Platform</b> — one-off matchmaking vs. building-on-top</li>
+      <li><b>DPI / JAM Trinity</b> — Jan Dhan + Aadhaar + Mobile; public infrastructure as orchestrator</li>
+      <li><b>Conway's Law</b> — org communication structure shapes system architecture</li>
+      <li><b>Three Ingredients of DT</b> — (1) Digital strategy, (2) Operational backbone, (3) Digital services platform (API)</li>
+    </ul>
+  </div>
+
+  <div class="footer-note">
+    <b>Note on scope:</b> your class notes stop at session 8 content (monolithic→microservices, JTBD, APIs) with nothing on AI — so Sessions 9–10 are treated as out of scope here. Say the word if the exam covers them too and I'll build a matching color-coded block for that material.
+  </div>
+
+</div>
+</body>
+</html>
