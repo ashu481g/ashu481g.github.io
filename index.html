@@ -1,184 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Mid-Term Exam Timetable</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-    margin:0;
-    font-family:Segoe UI,Arial,sans-serif;
-    background:#f4f7fb;
-    color:#333;
-}
+    <title>AshwiniOS</title>
 
-.container{
-    max-width:900px;
-    margin:40px auto;
-    background:#fff;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 10px 25px rgba(0,0,0,.1);
-}
+    <meta name="description"
+        content="AshwiniOS - Personal Digital Operating System">
 
-h1{
-    text-align:center;
-    color:#0B5ED7;
-    margin-bottom:5px;
-}
+    <link rel="icon" href="assets/icons/favicon.ico">
 
-h3{
-    text-align:center;
-    color:#666;
-    margin-top:0;
-    font-weight:400;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:25px;
-}
-
-th{
-    background:#0B5ED7;
-    color:white;
-    padding:14px;
-}
-
-td{
-    padding:14px;
-    border-bottom:1px solid #ddd;
-    text-align:center;
-}
-
-tr:nth-child(even){
-    background:#f8f9fa;
-}
-
-tr:hover{
-    background:#e9f2ff;
-}
-
-.subject{
-    font-weight:bold;
-    color:#0B5ED7;
-}
-
-.footer{
-    margin-top:20px;
-    text-align:center;
-    color:#666;
-    font-size:14px;
-}
-
-.links{
-    margin-top:30px;
-    text-align:center;
-}
-
-.links a{
-    text-decoration:none;
-    color:#fff;
-    background:#0B5ED7;
-    padding:10px 20px;
-    border-radius:6px;
-    margin:0 10px;
-    font-weight:bold;
-    transition:background-color 0.3s ease;
-}
-
-.links a:hover{
-    background-color:#084298;
-}
-</style>
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/tiles.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
+
 <body>
 
-<div class="container">
+    <!-- ===================================================== -->
+    <!-- Application Root                                      -->
+    <!-- ===================================================== -->
 
-<h1>📚 My Mid-Term Exam Timetable</h1>
-<h3>IIM Lucknow | PGP-II | Term IV | July 2026</h3>
+    <div id="app">
 
-<table>
-<thead>
-<tr>
-<th>Date</th>
-<th>Day</th>
-<th>Time</th>
-<th>Subject</th>
-</tr>
-</thead>
+        <!-- Hero -->
+        <section id="hero"></section>
 
-<tbody>
+        <!-- About -->
+        <section id="about"></section>
 
-<tr>
-<td>13 Jul 2026</td>
-<td>Monday</td>
-<td>12:00 PM – 1:30 PM</td>
-<td class="subject">TIDPBM</td>
-</tr>
+        <!-- Availability -->
+        <section id="availability"></section>
 
-<tr>
-<td>14 Jul 2026</td>
-<td>Tuesday</td>
-<td>09:00 AM – 10:30 AM</td>
-<td class="subject">FDRM</td>
-</tr>
+        <!-- Applications -->
+        <section id="applications"></section>
 
-<tr>
-<td>15 Jul 2026</td>
-<td>Wednesday</td>
-<td>06:00 PM – 07:30 PM</td>
-<td class="subject">DTAI</td>
-</tr>
+        <!-- Contact -->
+        <section id="contact"></section>
 
-<tr>
-<td>16 Jul 2026</td>
-<td>Thursday</td>
-<td>12:00 PM – 01:30 PM</td>
-<td class="subject">PEMB</td>
-</tr>
+    </div>
 
-<tr>
-<td>17 Jul 2026</td>
-<td>Friday</td>
-<td>09:00 AM – 10:30 AM</td>
-<td class="subject">HFS</td>
-</tr>
 
-<tr>
-<td>17 Jul 2026</td>
-<td>Friday</td>
-<td>03:00 PM – 04:30 PM</td>
-<td class="subject">SM-II</td>
-</tr>
+    <!-- ===================================================== -->
+    <!-- Admin Panel (Hidden until login)                      -->
+    <!-- ===================================================== -->
 
-<tr>
-<td>19 Jul 2026</td>
-<td>Sunday</td>
-<td>12:00 PM – 01:30 PM</td>
-<td class="subject">APPM</td>
-</tr>
+    <aside id="admin-panel" hidden></aside>
 
-</tbody>
-</table>
 
-<div class="footer">
-All the Best for your Mid-Term Exams! 🚀
-</div>
-<div class="links">
-  <a href="https://github.com/ayusha1107/ebooks/tree/master" target="_blank">📖 Crooked</a>
-  <a href="/SM2/SM22.html" target="_blank">⬅️ SM2 Notes</a>
-  <a href="/DTAI/DTAI.html" target="_blank">📖 DTAI Notes</a>
-</div>
-<div class="links">
-  <a href="/HFS/HFS.pdf" target="_blank">📖 HFS Notes</a>
-  <a href="https://student.panel.koed.in/" target="_blank">📖 LMS Portal</a>
-  <a href="https://research.ebsco.com/plink/fc52e075-622c-32da-9a3b-2024ed1fcb08" target="_blank">📖 PEMB Book</a>
-</div>
-</div>
+    <!-- ===================================================== -->
+    <!-- Loading Screen                                        -->
+    <!-- ===================================================== -->
+
+    <div id="loading-screen">
+
+        <h2>Loading AshwiniOS...</h2>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- JavaScript                                            -->
+    <!-- ===================================================== -->
+
+    <script src="assets/js/storage.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/router.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/tileEngine.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/app.js"></script>
+
 </body>
+
 </html>
