@@ -24,7 +24,6 @@
   <div id="schedule"></div>
 
   <script>
-    // --- PASTE YOUR CLIENT ID HERE ---
     const CLIENT_ID = '254731888816-nqo6vm79nuh59e3nfpuppofco9vl9t6v.apps.googleusercontent.com';
     const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
 
@@ -32,106 +31,88 @@
     let accessToken = null;
 
     function gapiLoaded() {
-        try {
-        tokenClient = google.accounts.oauth2.initTokenClient({
-            client_id: CLIENT_ID,
-            scope: SCOPES,
-            callback: async (resp) => {
-            if (resp.error) {
-                document.getElementById('status').innerText = 'Auth Error: ' + JSON.stringify(resp.error);
-                console.error('Auth Error Details:', resp);
-                return;
-            }
-            accessToken = resp.access_token;
-            document.getElementById('auth-btn').style.display = 'none';
-            document.getElementById('signout-btn').style.display = 'inline-block';
-            document.getElementById('status').innerText = 'Fetching schedule...';
-            await fetchSchedule();
-            },
-            error_callback: (err) => {
-            document.getElementById('status').innerText = 'Popup / Client Error: ' + JSON.stringify(err);
-            console.error('Client Error:', err);
-            }
-        });
-        document.getElementById('status').innerText = 'Ready. Click "Sign in" above.';
-        } catch (e) {
-        document.getElementById('status').innerText = 'Initialization Error: ' + e.message;
-        }
+      tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: async (resp) => {
+          if (resp.error) {
+            document.getElementById('status').innerText = 'Authentication error: ' + resp.error;
+            return;
+          }
+          accessToken = resp.access_token;
+          document.getElementById('auth-btn').style.display = 'none';
+          document.getElementById('signout-btn').style.display = 'inline-block';
+          document.getElementById('status').innerText = 'Fetching schedule...';
+          await fetchSchedule();
+        },
+      });
     }
 
     window.onload = () => {
-        if (window.google) {
-        gapiLoaded();
-        } else {
-        document.getElementById('status').innerText = 'Google SDK failed to load. Check ad-blockers.';
-        }
+      if (window.google) gapiLoaded();
     };
 
     function handleAuthClick() {
-        if (!tokenClient) {
-        alert('Google library not initialized yet. Refresh and try again.');
-        return;
-        }
-        // Request token
-        tokenClient.requestAccessToken({ prompt: 'consent' });
+      tokenClient.requestAccessToken({ prompt: 'consent' });
     }
 
     function handleSignoutClick() {
-        if (accessToken) {
+      if (accessToken) {
         google.accounts.oauth2.revoke(accessToken);
         accessToken = null;
         document.getElementById('auth-btn').style.display = 'inline-block';
         document.getElementById('signout-btn').style.display = 'none';
         document.getElementById('schedule').innerHTML = '';
         document.getElementById('status').innerText = 'Signed out.';
-        }
+      }
     }
 
     async function fetchSchedule() {
-        const now = new Date();
-        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
-        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).toISOString();
+      const now = new Date();
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+      const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).toISOString();
 
-        const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(startOfDay)}&timeMax=${encodeURIComponent(endOfDay)}&singleEvents=true&orderBy=startTime`;
+      const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(startOfDay)}&timeMax=${encodeURIComponent(endOfDay)}&singleEvents=true&orderBy=startTime`;
 
-        try {
+      try {
         const res = await fetch(url, {
-            headers: { Authorization: `Bearer ${accessToken}` }
+          headers: { Authorization: `Bearer ${accessToken}` }
         });
         const data = await res.json();
+        
         displayGist(data.items || []);
-        } catch (err) {
+      } catch (err) {
         document.getElementById('status').innerText = 'Failed to load events.';
         console.error(err);
-        }
+      }
     }
 
     function displayGist(events) {
-        const container = document.getElementById('schedule');
-        document.getElementById('status').innerText = '';
+      const container = document.getElementById('schedule');
+      document.getElementById('status').innerText = '';
 
-        if (events.length === 0) {
+      if (events.length === 0) {
         container.innerHTML = '<p>🎉 No events scheduled for today! Enjoy your free time.</p>';
         return;
-        }
+      }
 
-        let html = `<p>You have <strong>${events.length}</strong> event(s) today:</p>`;
+      let html = `<p>You have <strong>${events.length}</strong> event(s) today:</p>`;
 
-        events.forEach(event => {
+      events.forEach(event => {
         const start = event.start.dateTime ? new Date(event.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'All Day';
         const end = event.end.dateTime ? new Date(event.end.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
         const timeStr = end ? `${start} - ${end}` : start;
 
         html += `
-            <div class="card">
+          <div class="card">
             <div class="time">⏰ ${timeStr}</div>
             <div class="title">${event.summary || 'Untitled Event'}</div>
             ${event.description ? `<div style="font-size:0.9em; color:#555; margin-top:5px;">${event.description}</div>` : ''}
-            </div>
+          </div>
         `;
-        });
+      });
 
-        container.innerHTML = html;
+      container.innerHTML = html;
     }
   </script>
 </body>
