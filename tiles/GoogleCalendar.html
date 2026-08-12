@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Schedule & Availability</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 800px; margin: 30px auto; padding: 0 20px; color: #333; background: #fdfdfd; }
+    
+    /* Navigation Tabs */
+    .tab-nav { display: flex; border-bottom: 2px solid #e1e4e8; margin-bottom: 20px; gap: 10px; }
+    .tab-btn { padding: 10px 20px; font-size: 15px; font-weight: 600; border: none; background: none; cursor: pointer; color: #666; border-bottom: 3px solid transparent; }
+    .tab-btn.active { color: #0066cc; border-bottom-color: #0066cc; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Action Buttons */
+    .btn { padding: 8px 16px; border-radius: 6px; font-size: 14px; border: none; cursor: pointer; }
+    .btn-primary { background: #0066cc; color: white; }
+
+    /* Timeline Styles */
+    .day-container { background: #fff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 12px 15px; margin-bottom: 12px; }
+    .day-label { font-weight: 600; margin-bottom: 6px; }
+    .timeline-bar { position: relative; height: 24px; background: #2e7d32; border-radius: 4px; overflow: hidden; }
+    .busy-block { position: absolute; top: 0; bottom: 0; background: #d32f2f; opacity: 0.95; }
+    .hour-markers { display: flex; justify-content: space-between; font-size: 0.75em; color: #888; margin-top: 4px; }
+    
+    /* Private Details Card */
+    .card { background: #fff; border: 1px solid #e1e4e8; padding: 12px 16px; border-radius: 6px; margin-top: 10px; border-left: 4px solid #0066cc; }
+    .time { font-size: 0.85em; color: #666; font-weight: 600; }
+    .title { font-size: 1.05em; font-weight: 600; margin-top: 2px; }
+  </style>
+</head>
+<body>
+
+  <h2>📅 Calendar Hub</h2>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('public-tab')">🌐 Public Availability (7 Days)</button>
+    <button class="tab-btn" onclick="switchTab('private-tab')">🔒 My Detailed View</button>
+  </div>
+
+  <!-- TAB 1: PUBLIC AVAILABILITY VIEW -->
+  <div id="public-tab" class="tab-content active">
+    <p style="color: #666; font-size: 0.9em;">Live busy/free times for the upcoming week. Specific meeting details are hidden for privacy.</p>
+    <div id="public-timeline">Loading availability...</div>
+  </div>
+
+  <!-- TAB 2: PRIVATE DETAILED VIEW -->
+  <div id="private-tab" class="tab-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <p style="margin: 0; color: #666;">Sign in to view private titles, notes, and exact event details.</p>
+      <button id="auth-btn" class="btn btn-primary" onclick="handleAuthClick()">Sign in with Google</button>
+      <button id="signout-btn" class="btn" style="display:none; background:#777; color:#fff;" onclick="handleSignoutClick()">Sign Out</button>
+    </div>
+    <div id="private-status" style="font-style: italic;"></div>
+    <div id="private-schedule"></div>
+  </div>
+
+  <script>
+    // --- CONFIGURATION ---
+    const CLIENT_ID = '254731888816-nqo6vm79nuh59e3nfpuppofco9vl9t6v.apps.googleusercontent.com';
+    const API_KEY = 'AIzaSyDTOUnq_T5RGkxnJmaihf0OnB9wrQdFBnE'; // Generated in Google Cloud Console
+    const CALENDAR_ID = 'pgp41426@iiml.ac.in'; // Extracted from your link!
+    const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+    let tokenClient;
+    let accessToken = null;
+
+    // --- TAB SWITCHING ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // --- ON LOAD: Fetch Public Timeline Automatically ---
+    window.onload = () => {
+      fetchPublicTimeline();
+      if (window.google) gapiLoaded();
+    };
+
+    // --- 1. PUBLIC TIMELINE LOGIC (Uses API Key, No Sign-In) ---
+    async function fetchPublicTimeline() {
+      const start = new Date();
+      start.setHours(0,0,0,0);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 7);
+
+      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?key=${API_KEY}&timeMin=${encodeURIComponent(start.toISOString())}&timeMax=${encodeURIComponent(end.toISOString())}&singleEvents=true&orderBy=startTime`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        renderPublicTimeline(start, data.items || []);
+      } catch (err) {
+        document.getElementById('public-timeline').innerText = 'Unable to load public schedule.';
+      }
+    }
+
+    function renderPublicTimeline(startDate, events) {
+      const container = document.getElementById('public-timeline');
+      container.innerHTML = '';
+
+      for (let i = 0; i < 7; i++) {
+        const currentDay = new Date(startDate);
+        currentDay.setDate(currentDay.getDate() + i);
+
+        const dayStart = new Date(currentDay).setHours(0, 0, 0, 0);
+        const dayEnd = new Date(currentDay).setHours(23, 59, 59, 999);
+
+        const dayEvents = events.filter(e => {
+          const eStart = new Date(e.start.dateTime || e.start.date).getTime();
+          const eEnd = new Date(e.end.dateTime || e.end.date).getTime();
+          return eStart < dayEnd && eEnd > dayStart;
+        });
+
+        const dateStr = currentDay.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+
+        let dayHtml = `
+          <div class="day-container">
+            <div class="day-label">${dateStr}</div>
+            <div class="timeline-bar">`;
+
+        dayEvents.forEach(e => {
+          const eStart = new Date(e.start.dateTime || e.start.date);
+          const eEnd = new Date(e.end.dateTime || e.end.date);
+
+          const startMinutes = Math.max(0, (eStart.getTime() - dayStart) / (1000 * 60));
+          const endMinutes = Math.min(1440, (eEnd.getTime() - dayStart) / (1000 * 60));
+
+          const leftPercent = (startMinutes / 1440) * 100;
+          const widthPercent = ((endMinutes - startMinutes) / 1440) * 100;
+
+          // Note: Titles remain strictly "Busy" for public viewers
+          dayHtml += `<div class="busy-block" style="left: ${leftPercent}%; width: ${widthPercent}%;" title="Busy"></div>`;
+        });
+
+        dayHtml += `
+            </div>
+            <div class="hour-markers">
+              <span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>11 PM</span>
+            </div>
+          </div>`;
+
+        container.innerHTML += dayHtml;
+      }
+    }
+
+    // --- 2. PRIVATE VIEW LOGIC (Uses OAuth Login) ---
+    function gapiLoaded() {
+      tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: async (resp) => {
+          if (resp.error) return;
+          accessToken = resp.access_token;
+          document.getElementById('auth-btn').style.display = 'none';
+          document.getElementById('signout-btn').style.display = 'inline-block';
+          document.getElementById('private-status').innerText = 'Loading private schedule...';
+          await fetchPrivateSchedule();
+        },
+      });
+    }
+
+    function handleAuthClick() { tokenClient.requestAccessToken({ prompt: 'consent' }); }
+
+    function handleSignoutClick() {
+      if (accessToken) {
+        google.accounts.oauth2.revoke(accessToken);
+        accessToken = null;
+        document.getElementById('auth-btn').style.display = 'inline-block';
+        document.getElementById('signout-btn').style.display = 'none';
+        document.getElementById('private-schedule').innerHTML = '';
+        document.getElementById('private-status').innerText = 'Signed out.';
+      }
+    }
+
+    async function fetchPrivateSchedule() {
+      const now = new Date();
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+      const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7, 23, 59, 59).toISOString();
+
+      const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(startOfDay)}&timeMax=${encodeURIComponent(endOfDay)}&singleEvents=true&orderBy=startTime`;
+
+      try {
+        const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+        const data = await res.json();
+        renderPrivateSchedule(data.items || []);
+      } catch (err) {
+        document.getElementById('private-status').innerText = 'Failed to load details.';
+      }
+    }
+
+    function renderPrivateSchedule(events) {
+      const container = document.getElementById('private-schedule');
+      document.getElementById('private-status').innerText = '';
+
+      if (events.length === 0) {
+        container.innerHTML = '<p>No events scheduled for the next 7 days.</p>';
+        return;
+      }
+
+      let html = '';
+      events.forEach(event => {
+        const start = event.start.dateTime ? new Date(event.start.dateTime).toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'All Day';
+        html += `
+          <div class="card">
+            <div class="time">⏰ ${start}</div>
+            <div class="title">${event.summary || 'Untitled Event'}</div>
+            ${event.description ? `<div style="font-size:0.9em; color:#555; margin-top:4px;">${event.description}</div>` : ''}
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
