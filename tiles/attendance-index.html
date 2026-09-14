@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F7F4EC;
+    --paper-line: #E4DDC9;
+    --ink: #1C1A17;
+    --ink-soft: #6B6558;
+    --brass: #8A6B3F;
+    --brass-soft: #C9B48C;
+    --present: #3F6B4F;
+    --present-bg: #E7EEE3;
+    --absent: #A34632;
+    --absent-bg: #F3E4DE;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .frame{
+    max-width:920px;
+    margin:0 auto;
+    padding:48px 24px 80px;
+  }
+  header{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:18px;
+    margin-bottom:12px;
+    gap:16px;
+  }
+  header h1{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    font-size:clamp(26px,4vw,38px);
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .header-right{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  header .today{
+    font-size:13px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .settings-btn{
+    border:1px solid var(--brass-soft);
+    background:#fff;
+    color:var(--ink);
+    font-size:12.5px;
+    padding:7px 12px;
+    border-radius:3px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    white-space:nowrap;
+  }
+  .settings-btn:hover{background:var(--paper);}
+  .sync-status{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:24px;
+    min-height:16px;
+  }
+  .sync-status.error{color:var(--absent);}
+  .sync-status.saving{color:var(--brass);}
+  .layout{
+    display:grid;
+    grid-template-columns:230px 1fr;
+    gap:0;
+    border:1px solid var(--paper-line);
+    background:#fff;
+    min-height:520px;
+  }
+  @media (max-width:680px){
+    .layout{grid-template-columns:1fr;}
+    .spine{border-right:none;border-bottom:1px solid var(--paper-line);}
+  }
+  .spine{
+    border-right:1px solid var(--paper-line);
+    padding:20px 0;
+    background:#FBFAF5;
+  }
+  .spine-label{
+    font-size:11px;
+    color:var(--ink-soft);
+    padding:0 20px 12px;
+    letter-spacing:0.02em;
+  }
+  .subject-list{list-style:none;margin:0;padding:0;}
+  .subject-list li{position:relative;}
+  .subject-btn{
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    font-family:'Source Serif 4',serif;
+    font-size:17px;
+    color:var(--ink);
+    padding:11px 20px;
+    cursor:pointer;
+    display:block;
+    border-left:3px solid transparent;
+  }
+  .subject-btn:hover{background:var(--paper);}
+  .subject-btn.active{
+    background:var(--paper);
+    border-left-color:var(--brass);
+    font-weight:600;
+  }
+  .subject-empty{padding:0 20px;font-size:13px;color:var(--ink-soft);line-height:1.5;}
+  .add-subject{padding:16px 20px 4px;border-top:1px solid var(--paper-line);margin-top:14px;}
+  .add-subject form{display:flex;gap:6px;}
+  .add-subject input{
+    flex:1;min-width:0;padding:8px 9px;
+    border:1px solid var(--brass-soft);background:#fff;
+    font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);border-radius:2px;
+  }
+  .add-subject input:focus{outline:2px solid var(--brass);outline-offset:1px;}
+  .add-subject button{
+    padding:8px 12px;border:1px solid var(--ink);background:var(--ink);
+    color:var(--paper);font-size:13px;cursor:pointer;border-radius:2px;font-family:'Inter',sans-serif;
+  }
+  .add-subject button:hover{background:#3a352c;}
+  .add-subject button:disabled{background:#ccc5b3;border-color:#ccc5b3;cursor:not-allowed;}
+  .panel{padding:28px 32px 32px;}
+  .no-subject{color:var(--ink-soft);font-size:15px;line-height:1.6;padding-top:40px;text-align:center;}
+  .panel-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px;}
+  .panel-header h2{font-family:'Source Serif 4',serif;font-size:24px;margin:0;}
+  .tabs{display:flex;gap:2px;background:var(--paper-line);padding:2px;border-radius:3px;}
+  .tab{border:none;background:transparent;padding:7px 14px;font-size:13px;font-family:'Inter',sans-serif;font-weight:500;cursor:pointer;border-radius:2px;color:var(--ink-soft);}
+  .tab.active{background:#fff;color:var(--ink);}
+  .mark-form{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;padding:18px 20px;background:var(--paper);border:1px solid var(--paper-line);border-radius:3px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field label{font-size:12px;color:var(--ink-soft);}
+  .field input[type="date"]{padding:9px 10px;border:1px solid var(--brass-soft);background:#fff;font-family:'Inter',sans-serif;font-size:14px;border-radius:2px;color:var(--ink);}
+  .status-toggle{display:flex;gap:8px;}
+  .status-toggle button{padding:9px 16px;border:1px solid var(--paper-line);background:#fff;font-size:13px;font-family:'Inter',sans-serif;font-weight:500;cursor:pointer;border-radius:2px;color:var(--ink-soft);}
+  .status-toggle button.sel-present.selected{background:var(--present-bg);border-color:var(--present);color:var(--present);}
+  .status-toggle button.sel-absent.selected{background:var(--absent-bg);border-color:var(--absent);color:var(--absent);}
+  .save-btn{padding:10px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font-size:13px;font-weight:500;cursor:pointer;border-radius:2px;font-family:'Inter',sans-serif;}
+  .save-btn:hover{background:#3a352c;}
+  .save-btn:disabled{background:#ccc5b3;border-color:#ccc5b3;cursor:not-allowed;}
+  .form-note{font-size:12px;color:var(--brass);margin-top:12px;min-height:16px;}
+  .form-note.error{color:var(--absent);}
+  .summary{display:flex;gap:28px;margin:24px 2px 8px;flex-wrap:wrap;}
+  .summary .stat{display:flex;flex-direction:column;}
+  .summary .stat .num{font-family:'Source Serif 4',serif;font-size:26px;font-weight:600;}
+  .summary .stat .lbl{font-size:11.5px;color:var(--ink-soft);}
+  .summary .stat.present .num{color:var(--present);}
+  .summary .stat.absent .num{color:var(--absent);}
+  .log-list{list-style:none;margin:18px 0 0;padding:0;border-top:1px solid var(--paper-line);}
+  .log-row{display:flex;align-items:center;justify-content:space-between;padding:11px 4px;border-bottom:1px solid var(--paper-line);font-size:14px;}
+  .log-row .date{font-family:'Inter',sans-serif;color:var(--ink);}
+  .log-row .weekday{color:var(--ink-soft);font-size:12.5px;margin-left:8px;}
+  .log-row .status-pill{font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;}
+  .status-pill.present{background:var(--present-bg);color:var(--present);}
+  .status-pill.absent{background:var(--absent-bg);color:var(--absent);}
+  .log-empty{padding:32px 4px;text-align:center;color:var(--ink-soft);font-size:14px;}
+  .loading-screen{padding:60px 4px;text-align:center;color:var(--ink-soft);font-size:14px;grid-column:1/-1;}
+
+  /* Settings modal */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(28,26,23,0.45);
+    display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;
+  }
+  .modal{
+    background:#fff;border:1px solid var(--paper-line);border-radius:4px;
+    max-width:440px;width:100%;padding:26px 26px 22px;
+  }
+  .modal h3{font-family:'Source Serif 4',serif;margin:0 0 6px;font-size:20px;}
+  .modal p.hint{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:0 0 18px;}
+  .modal .field{margin-bottom:12px;width:100%;}
+  .modal .field label{font-size:12px;color:var(--ink-soft);margin-bottom:4px;display:block;}
+  .modal .field input{
+    width:100%;padding:9px 10px;border:1px solid var(--brass-soft);
+    background:#fff;font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink);border-radius:2px;
+  }
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;}
+  .modal-actions button{
+    padding:9px 16px;font-size:13px;border-radius:2px;cursor:pointer;font-family:'Inter',sans-serif;
+  }
+  .btn-secondary{background:#fff;border:1px solid var(--paper-line);color:var(--ink-soft);}
+  .btn-primary{background:var(--ink);border:1px solid var(--ink);color:var(--paper);}
+  .modal-error{font-size:12.5px;color:var(--absent);margin-top:4px;min-height:16px;}
+</style>
+</head>
+<body>
+<div class="frame">
+  <header>
+    <h1>Attendance Register</h1>
+    <div class="header-right">
+      <div class="today" id="todayLabel"></div>
+      <button class="settings-btn" id="settingsBtn">Storage settings</button>
+    </div>
+  </header>
+  <div class="sync-status" id="syncStatus"></div>
+
+  <div class="layout" id="layout">
+    <div class="loading-screen">Checking storage settings…</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const CONFIG_KEY = "attendanceGithubConfig";
+  let state = { subjects: [], records: {} };
+  let currentSha = null; // sha of data.json in the repo, needed to update it
+  let activeSubject = null;
+  let activeTab = "mark";
+  let selectedStatus = null;
+
+  const syncStatusEl = document.getElementById('syncStatus');
+  function setSyncStatus(msg, kind){
+    syncStatusEl.textContent = msg || "";
+    syncStatusEl.className = "sync-status" + (kind ? " " + kind : "");
+  }
+
+  function getConfig(){
+    try{ return JSON.parse(localStorage.getItem(CONFIG_KEY) || "null"); }catch(e){ return null; }
+  }
+  function setConfig(cfg){
+    localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
+  }
+
+  // --- UTF-8 safe base64 helpers ---
+  function utf8ToBase64(str){
+    return btoa(unescape(encodeURIComponent(str)));
+  }
+  function base64ToUtf8(b64){
+    return decodeURIComponent(escape(atob(b64.replace(/\n/g, ''))));
+  }
+
+  // --- GitHub Contents API ---
+  function apiUrl(cfg){
+    return `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${encodeURIComponent(cfg.path)}`;
+  }
+
+  async function githubGet(cfg){
+    const url = apiUrl(cfg) + `?ref=${encodeURIComponent(cfg.branch)}&_=${Date.now()}`;
+    const res = await fetch(url, {
+      headers: {
+        'Authorization': 'Bearer ' + cfg.token,
+        'Accept': 'application/vnd.github+json'
+      }
+    });
+    if(res.status === 404){
+      return { exists: false };
+    }
+    if(!res.ok){
+      const body = await res.text().catch(()=> "");
+      throw new Error(`GitHub GET failed (${res.status}): ${body}`);
+    }
+    const data = await res.json();
+    const text = base64ToUtf8(data.content);
+    let parsed;
+    try{ parsed = JSON.parse(text); }catch(e){ parsed = { subjects: [], records: {} }; }
+    return { exists: true, sha: data.sha, data: parsed };
+  }
+
+  async function githubPut(cfg, dataObj, sha){
+    const body = {
+      message: "Update attendance data",
+      content: utf8ToBase64(JSON.stringify(dataObj, null, 2)),
+      branch: cfg.branch
+    };
+    if(sha) body.sha = sha;
+    const res = await fetch(apiUrl(cfg), {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Bearer ' + cfg.token,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    if(!res.ok){
+      const errBody = await res.text().catch(()=> "");
+      throw new Error(`GitHub save failed (${res.status}): ${errBody}`);
+    }
+    const result = await res.json();
+    return result.content.sha;
+  }
+
+  async function persist(){
+    const cfg = getConfig();
+    if(!cfg){ setSyncStatus("Storage not set up.", "error"); return; }
+    setSyncStatus("Saving to GitHub…", "saving");
+    try{
+      currentSha = await githubPut(cfg, state, currentSha);
+      setSyncStatus("Saved to GitHub.");
+      setTimeout(() => { if(syncStatusEl.textContent === "Saved to GitHub.") setSyncStatus(""); }, 1800);
+    }catch(e){
+      console.error(e);
+      setSyncStatus("Couldn't save to GitHub — " + e.message, "error");
+      throw e;
+    }
+  }
+
+  function todayLabel(){
+    const d = new Date();
+    document.getElementById('todayLabel').textContent = d.toLocaleDateString(undefined,{ weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  }
+
+  // --- Settings modal ---
+  function openSettings(){
+    const cfg = getConfig() || { owner:"", repo:"", path:"data.json", branch:"main", token:"" };
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal">
+        <h3>Storage settings</h3>
+        <p class="hint">Your attendance data is stored as a JSON file in a GitHub repo of your choice. Use a fine-grained personal access token scoped to only this repo, with read/write access to "Contents". Enter the same details on every device to see the same data.</p>
+        <div class="field"><label>Repo owner (username)</label><input id="cfgOwner" value="${escapeAttr(cfg.owner)}" placeholder="e.g. kumar-ashwini"></div>
+        <div class="field"><label>Repo name</label><input id="cfgRepo" value="${escapeAttr(cfg.repo)}" placeholder="e.g. attendance-data"></div>
+        <div class="field"><label>File path</label><input id="cfgPath" value="${escapeAttr(cfg.path || 'data.json')}" placeholder="data.json"></div>
+        <div class="field"><label>Branch</label><input id="cfgBranch" value="${escapeAttr(cfg.branch || 'main')}" placeholder="main"></div>
+        <div class="field"><label>Personal access token</label><input id="cfgToken" type="password" value="${escapeAttr(cfg.token)}" placeholder="github_pat_..."></div>
+        <div class="modal-error" id="modalError"></div>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="cancelSettings">Cancel</button>
+          <button class="btn-primary" id="saveSettings">Save & connect</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    overlay.querySelector('#cancelSettings').addEventListener('click', () => overlay.remove());
+
+    overlay.querySelector('#saveSettings').addEventListener('click', async () => {
+      const newCfg = {
+        owner: overlay.querySelector('#cfgOwner').value.trim(),
+        repo: overlay.querySelector('#cfgRepo').value.trim(),
+        path: overlay.querySelector('#cfgPath').value.trim() || 'data.json',
+        branch: overlay.querySelector('#cfgBranch').value.trim() || 'main',
+        token: overlay.querySelector('#cfgToken').value.trim()
+      };
+      const errEl = overlay.querySelector('#modalError');
+      if(!newCfg.owner || !newCfg.repo || !newCfg.token){
+        errEl.textContent = "Owner, repo, and token are required.";
+        return;
+      }
+      const btn = overlay.querySelector('#saveSettings');
+      btn.disabled = true;
+      errEl.textContent = "";
+      try{
+        const result = await githubGet(newCfg);
+        setConfig(newCfg);
+        if(result.exists){
+          state = result.data;
+          if(!Array.isArray(state.subjects)) state.subjects = [];
+          if(typeof state.records !== 'object' || !state.records) state.records = {};
+          currentSha = result.sha;
+        } else {
+          state = { subjects: [], records: {} };
+          currentSha = null;
+        }
+        activeSubject = state.subjects.length ? state.subjects[0] : null;
+        overlay.remove();
+        renderLayout();
+        setSyncStatus("Connected to " + newCfg.owner + "/" + newCfg.repo + ".");
+        setTimeout(() => setSyncStatus(""), 1800);
+      }catch(e){
+        console.error(e);
+        errEl.textContent = "Couldn't connect: " + e.message;
+        btn.disabled = false;
+      }
+    });
+  }
+
+  function escapeAttr(s){
+    return String(s || "").replace(/"/g, '&quot;');
+  }
+
+  document.getElementById('settingsBtn').addEventListener('click', openSettings);
+
+  // --- Rendering (same structure as before) ---
+  function renderLayout(){
+    const layout = document.getElementById('layout');
+    layout.innerHTML = `
+      <div class="spine">
+        <div class="spine-label">SUBJECTS</div>
+        <ul class="subject-list" id="subjectList"></ul>
+        <div class="add-subject">
+          <form id="addSubjectForm">
+            <input type="text" id="newSubjectInput" placeholder="Add subject" maxlength="60" autocomplete="off">
+            <button type="submit">Add</button>
+          </form>
+        </div>
+      </div>
+      <div class="panel" id="panel"></div>
+    `;
+
+    document.getElementById('addSubjectForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('newSubjectInput');
+      const btn = e.target.querySelector('button');
+      const name = input.value.trim();
+      if(!name || state.subjects.includes(name)){ input.value = ''; return; }
+      btn.disabled = true;
+      const prevSubjects = state.subjects.slice();
+      state.subjects.push(name);
+      try{
+        await persist();
+        activeSubject = name;
+        activeTab = 'mark';
+        input.value = '';
+      }catch(e){
+        state.subjects = prevSubjects; // roll back on failure
+      }
+      btn.disabled = false;
+      renderSubjectList();
+      renderPanel();
+    });
+
+    renderSubjectList();
+    renderPanel();
+  }
+
+  function renderSubjectList(){
+    const ul = document.getElementById('subjectList');
+    ul.innerHTML = "";
+    if(state.subjects.length === 0){
+      const li = document.createElement('li');
+      li.innerHTML = '<div class="subject-empty">No subjects yet. Add your first one below.</div>';
+      ul.appendChild(li);
+      return;
+    }
+    state.subjects.forEach(subj => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className = 'subject-btn' + (subj === activeSubject ? ' active' : '');
+      btn.textContent = subj;
+      btn.addEventListener('click', () => {
+        activeSubject = subj;
+        selectedStatus = null;
+        renderSubjectList();
+        renderPanel();
+      });
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+  }
+
+  function renderPanel(){
+    const panel = document.getElementById('panel');
+    if(!activeSubject){
+      panel.innerHTML = '<div class="no-subject">Add a subject on the left, then select it here to mark or view attendance.</div>';
+      return;
+    }
+    panel.innerHTML = `
+      <div class="panel-header">
+        <h2>${escapeHtml(activeSubject)}</h2>
+        <div class="tabs">
+          <button class="tab ${activeTab==='mark'?'active':''}" data-tab="mark">Mark attendance</button>
+          <button class="tab ${activeTab==='view'?'active':''}" data-tab="view">View log</button>
+        </div>
+      </div>
+      <div id="tabBody"></div>
+    `;
+    panel.querySelectorAll('.tab').forEach(t => {
+      t.addEventListener('click', () => {
+        activeTab = t.dataset.tab;
+        selectedStatus = null;
+        renderPanel();
+      });
+    });
+    if(activeTab === 'mark') renderMarkTab(); else renderViewTab();
+  }
+
+  function renderMarkTab(){
+    const body = document.getElementById('tabBody');
+    body.innerHTML = `
+      <div class="mark-form">
+        <div class="field"><label for="dateInput">Date</label><input type="date" id="dateInput"></div>
+        <div class="field">
+          <label>Status</label>
+          <div class="status-toggle">
+            <button type="button" class="sel-present" id="selPresent">Present</button>
+            <button type="button" class="sel-absent" id="selAbsent">Absent</button>
+          </div>
+        </div>
+        <button class="save-btn" id="saveBtn" disabled>Save entry</button>
+      </div>
+      <div class="form-note" id="formNote"></div>
+    `;
+    const dateInput = document.getElementById('dateInput');
+    const selPresent = document.getElementById('selPresent');
+    const selAbsent = document.getElementById('selAbsent');
+    const saveBtn = document.getElementById('saveBtn');
+    const formNote = document.getElementById('formNote');
+
+    function updateNote(){
+      const d = dateInput.value;
+      formNote.className = "form-note";
+      if(d && state.records[activeSubject] && state.records[activeSubject][d]){
+        formNote.textContent = `Already marked ${state.records[activeSubject][d]} for this date — saving will overwrite it.`;
+      } else {
+        formNote.textContent = "";
+      }
+      saveBtn.disabled = !(dateInput.value && selectedStatus);
+    }
+    dateInput.addEventListener('change', updateNote);
+    selPresent.addEventListener('click', () => { selectedStatus='present'; selPresent.classList.add('selected'); selAbsent.classList.remove('selected'); updateNote(); });
+    selAbsent.addEventListener('click', () => { selectedStatus='absent'; selAbsent.classList.add('selected'); selPresent.classList.remove('selected'); updateNote(); });
+
+    saveBtn.addEventListener('click', async () => {
+      if(!dateInput.value || !selectedStatus) return;
+      saveBtn.disabled = true;
+      const prevRecords = JSON.parse(JSON.stringify(state.records));
+      if(!state.records[activeSubject]) state.records[activeSubject] = {};
+      state.records[activeSubject][dateInput.value] = selectedStatus;
+      const savedDate = dateInput.value;
+      try{
+        await persist();
+        selectedStatus = null;
+        renderMarkTab();
+        document.getElementById('formNote').textContent = `Saved: ${formatDate(savedDate)}.`;
+      }catch(e){
+        state.records = prevRecords;
+        formNote.textContent = "Couldn't save — try again.";
+        formNote.className = "form-note error";
+        saveBtn.disabled = false;
+      }
+    });
+    updateNote();
+  }
+
+  function renderViewTab(){
+    const body = document.getElementById('tabBody');
+    const records = state.records[activeSubject] || {};
+    const dates = Object.keys(records).sort();
+    const presentCount = dates.filter(d => records[d] === 'present').length;
+    const absentCount = dates.filter(d => records[d] === 'absent').length;
+    const total = dates.length;
+    const pct = total ? Math.round((presentCount/total)*100) : 0;
+    let html = `
+      <div class="summary">
+        <div class="stat"><div class="num">${total}</div><div class="lbl">Total marked</div></div>
+        <div class="stat present"><div class="num">${presentCount}</div><div class="lbl">Present</div></div>
+        <div class="stat absent"><div class="num">${absentCount}</div><div class="lbl">Absent</div></div>
+        <div class="stat"><div class="num">${pct}%</div><div class="lbl">Attendance</div></div>
+      </div>
+    `;
+    if(total === 0){
+      html += `<div class="log-empty">No attendance marked yet for ${escapeHtml(activeSubject)}.</div>`;
+    } else {
+      html += '<ul class="log-list">';
+      dates.slice().reverse().forEach(d => {
+        const status = records[d];
+        html += `<li class="log-row"><span><span class="date">${formatDate(d)}</span><span class="weekday">${weekday(d)}</span></span><span class="status-pill ${status}">${status === 'present' ? 'Present' : 'Absent'}</span></li>`;
+      });
+      html += '</ul>';
+    }
+    body.innerHTML = html;
+  }
+
+  function formatDate(iso){ const [y,m,d]=iso.split('-').map(Number); return new Date(y,m-1,d).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}); }
+  function weekday(iso){ const [y,m,d]=iso.split('-').map(Number); return new Date(y,m-1,d).toLocaleDateString(undefined,{weekday:'short'}); }
+  function escapeHtml(s){ const div=document.createElement('div'); div.textContent=s; return div.innerHTML; }
+
+  async function init(){
+    todayLabel();
+    const cfg = getConfig();
+    if(!cfg){
+      document.getElementById('layout').innerHTML =
+        '<div class="loading-screen">Not connected yet. Click "Storage settings" above to link a GitHub repo for saving your attendance.</div>';
+      return;
+    }
+    try{
+      const result = await githubGet(cfg);
+      if(result.exists){
+        state = result.data;
+        if(!Array.isArray(state.subjects)) state.subjects = [];
+        if(typeof state.records !== 'object' || !state.records) state.records = {};
+        currentSha = result.sha;
+      } else {
+        state = { subjects: [], records: {} };
+        currentSha = null;
+      }
+      activeSubject = state.subjects.length ? state.subjects[0] : null;
+      renderLayout();
+    }catch(e){
+      console.error(e);
+      document.getElementById('layout').innerHTML =
+        '<div class="loading-screen">Couldn\'t load from GitHub. Check "Storage settings" — the token or repo details may be wrong.</div>';
+      setSyncStatus("Couldn't load: " + e.message, "error");
+    }
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
