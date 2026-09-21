@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Attendance Register</title>
+<link rel="icon" href="data:," />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="book">
+
+  <!-- ===== Spine navigation ===== -->
+  <header class="spine">
+    <div class="spine-title">
+      <span class="spine-title-mark">Attendance</span>
+      <span class="spine-title-sub">Register</span>
+    </div>
+    <button class="spine-toggle" id="navToggle" aria-expanded="false" aria-controls="spineNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="spine-nav" id="spineNav">
+      <a href="#dashboard" class="tab" data-view="dashboard">Dashboard</a>
+      <a href="#subjects" class="tab" data-view="subjects">Subjects</a>
+      <a href="#record" class="tab" data-view="record">Record Attendance</a>
+      <a href="#reports" class="tab" data-view="reports">Reports</a>
+      <a href="#data" class="tab" data-view="data">Data Management</a>
+    </nav>
+  </header>
+
+  <!-- ===== Page content ===== -->
+  <main class="page">
+
+    <!-- Dashboard -->
+    <section class="view" id="view-dashboard" data-view="dashboard" hidden>
+      <h1 class="page-title">Dashboard</h1>
+      <div id="dashboardEmpty" class="empty-state" hidden>
+        <p>Your register is empty.</p>
+        <p class="empty-state-sub">Add a subject, then record your first class to see your summary here.</p>
+        <a class="btn btn-primary" href="#subjects">Add a subject</a>
+      </div>
+      <div id="dashboardContent" hidden>
+        <dl class="ledger-strip" id="overallStrip" aria-label="Overall attendance summary"></dl>
+        <h2 class="section-title">By subject</h2>
+        <div class="table-wrap">
+          <table class="ledger-table" id="subjectSummaryTable">
+            <thead>
+              <tr>
+                <th scope="col">Subject</th>
+                <th scope="col" class="num">Total</th>
+                <th scope="col" class="num">Present</th>
+                <th scope="col" class="num">Absent</th>
+                <th scope="col" class="num">Attendance</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Subjects -->
+    <section class="view" id="view-subjects" data-view="subjects" hidden>
+      <div class="page-title-row">
+        <h1 class="page-title">Subjects</h1>
+        <button class="btn btn-primary" id="addSubjectBtn">Add subject</button>
+      </div>
+      <div id="subjectsEmpty" class="empty-state" hidden>
+        <p>No subjects yet.</p>
+        <p class="empty-state-sub">Add your first subject to start tracking attendance.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="ledger-table" id="subjectsTable" hidden>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Code</th>
+              <th scope="col">Description</th>
+              <th scope="col" class="num">Records</th>
+              <th scope="col" class="actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Record Attendance -->
+    <section class="view" id="view-record" data-view="record" hidden>
+      <h1 class="page-title">Record Attendance</h1>
+      <div id="recordNoSubjects" class="empty-state" hidden>
+        <p>You need a subject before you can record attendance.</p>
+        <a class="btn btn-primary" href="#subjects">Add a subject</a>
+      </div>
+      <form class="form ledger-form" id="recordForm" hidden>
+        <div class="field">
+          <label for="recordSubject">Subject</label>
+          <select id="recordSubject" name="subjectId" required></select>
+        </div>
+        <div class="field">
+          <label for="recordDate">Date</label>
+          <input type="date" id="recordDate" name="date" required />
+        </div>
+        <div class="field">
+          <span class="field-label">Status</span>
+          <div class="status-choice" id="recordStatusChoice"></div>
+        </div>
+        <div class="field">
+          <label for="recordRemarks">Remarks <span class="optional">(optional)</span></label>
+          <textarea id="recordRemarks" name="remarks" rows="2" placeholder="Regular class, extra lecture, etc."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save attendance</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Reports -->
+    <section class="view" id="view-reports" data-view="reports" hidden>
+      <h1 class="page-title">Reports</h1>
+      <div id="reportsNoSubjects" class="empty-state" hidden>
+        <p>No subjects yet.</p>
+        <p class="empty-state-sub">Add a subject to see its attendance report here.</p>
+      </div>
+      <div id="reportsContent" hidden>
+        <div class="field field-inline">
+          <label for="reportSubjectSelect">Subject</label>
+          <select id="reportSubjectSelect"></select>
+        </div>
+        <div id="reportBody" hidden>
+          <dl class="ledger-strip" id="reportStrip" aria-label="Subject attendance summary"></dl>
+          <div class="table-wrap">
+            <table class="ledger-table" id="reportTable">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Remarks</th>
+                  <th scope="col" class="actions-col">Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="empty-state" id="reportEmpty" hidden>No attendance recorded for this subject yet.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Management -->
+    <section class="view" id="view-data" data-view="data" hidden>
+      <h1 class="page-title">Data Management</h1>
+
+      <div class="data-block">
+        <h2 class="section-title">Export</h2>
+        <p class="data-note">Download everything as one backup file. Keep it somewhere safe — it's the only copy of your data outside this browser.</p>
+        <p class="data-note" id="lastExportedNote"></p>
+        <button class="btn btn-primary" id="exportBtn">Export backup</button>
+      </div>
+
+      <div class="data-block">
+        <h2 class="section-title">Import</h2>
+        <p class="data-note">Restore data from a previously exported backup file. This replaces everything currently stored in this browser.</p>
+        <input type="file" id="importFile" accept="application/json" />
+        <button class="btn btn-secondary" id="importBtn" disabled>Import backup</button>
+      </div>
+
+      <div class="data-block data-block-danger">
+        <h2 class="section-title">Reset all data</h2>
+        <p class="data-note">Permanently deletes every subject and attendance record stored in this browser. Make sure you've exported a backup first.</p>
+        <button class="btn btn-danger" id="resetBtn">Reset all data</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===== Toast / message ===== -->
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- ===== Subject form dialog (add/edit) ===== -->
+<dialog class="dialog" id="subjectDialog">
+  <form method="dialog" class="form" id="subjectForm">
+    <h2 id="subjectDialogTitle">Add subject</h2>
+    <div class="field">
+      <label for="subjectName">Subject name</label>
+      <input type="text" id="subjectName" required maxlength="120" />
+    </div>
+    <div class="field">
+      <label for="subjectCode">Subject code <span class="optional">(optional)</span></label>
+      <input type="text" id="subjectCode" maxlength="30" />
+    </div>
+    <div class="field">
+      <label for="subjectDescription">Description <span class="optional">(optional)</span></label>
+      <textarea id="subjectDescription" rows="2" maxlength="300"></textarea>
+    </div>
+    <p class="form-error" id="subjectFormError" hidden></p>
+    <div class="form-actions">
+      <button type="button" class="btn btn-text" data-close-dialog>Cancel</button>
+      <button type="submit" class="btn btn-primary" id="subjectFormSubmit">Add subject</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ===== Attendance edit dialog ===== -->
+<dialog class="dialog" id="attendanceDialog">
+  <form method="dialog" class="form" id="attendanceEditForm">
+    <h2>Edit attendance</h2>
+    <div class="field">
+      <label for="editDate">Date</label>
+      <input type="date" id="editDate" required />
+    </div>
+    <div class="field">
+      <span class="field-label">Status</span>
+      <div class="status-choice" id="editStatusChoice"></div>
+    </div>
+    <div class="field">
+      <label for="editRemarks">Remarks <span class="optional">(optional)</span></label>
+      <textarea id="editRemarks" rows="2"></textarea>
+    </div>
+    <p class="form-error" id="attendanceFormError" hidden></p>
+    <div class="form-actions">
+      <button type="button" class="btn btn-text" data-close-dialog>Cancel</button>
+      <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ===== Generic confirm dialog (delete, reset, cascade warnings) ===== -->
+<dialog class="dialog dialog-confirm" id="confirmDialog">
+  <h2 id="confirmTitle">Are you sure?</h2>
+  <p id="confirmMessage"></p>
+  <div class="form-actions">
+    <button type="button" class="btn btn-text" id="confirmCancelBtn">Cancel</button>
+    <button type="button" class="btn btn-danger" id="confirmOkBtn">Confirm</button>
+  </div>
+</dialog>
+
+<!-- ===== Duplicate attendance found dialog ===== -->
+<dialog class="dialog dialog-confirm" id="duplicateDialog">
+  <h2>Attendance already recorded</h2>
+  <p id="duplicateMessage">Attendance already exists for this subject on this date. Do you want to edit the existing record?</p>
+  <div class="form-actions">
+    <button type="button" class="btn btn-text" id="duplicateCancelBtn">Cancel</button>
+    <button type="button" class="btn btn-primary" id="duplicateEditBtn">Edit existing record</button>
+  </div>
+</dialog>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
