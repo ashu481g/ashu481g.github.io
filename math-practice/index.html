@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A friendly mathematics practice tool for children.">
+  <title>Math Practice</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="brand">🧮 <span>Math Practice</span></div>
+      <button id="headerEndBtn" class="text-button hidden" type="button">End Session</button>
+    </header>
+
+    <section id="welcomeScreen" class="screen active" aria-labelledby="welcomeTitle">
+      <div class="hero-card">
+        <div class="hero-icon" aria-hidden="true">🌟</div>
+        <h1 id="welcomeTitle">Let's Practice Mathematics!</h1>
+        <p class="subtitle">Choose what you want to practice.</p>
+        <div id="operationCards" class="operation-grid"></div>
+        <p class="saved-note" id="savedNote"></p>
+      </div>
+    </section>
+
+    <section id="configurationScreen" class="screen" aria-labelledby="configTitle">
+      <div class="content-card">
+        <button class="back-button" data-back="welcomeScreen" type="button">← Back</button>
+        <div class="section-heading">
+          <span id="configIcon" class="heading-icon" aria-hidden="true">➕</span>
+          <div>
+            <h2 id="configTitle">Addition</h2>
+            <p>Choose the numbers and how much you want to practice.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <div class="setting-card">
+            <label for="upperDigits">Upper Number</label>
+            <select id="upperDigits" aria-describedby="upperHelp"></select>
+            <small id="upperHelp">Number of digits in the top number.</small>
+          </div>
+          <div class="setting-card">
+            <label for="lowerDigits">Lower Number</label>
+            <select id="lowerDigits" aria-describedby="lowerHelp"></select>
+            <small id="lowerHelp">Number of digits in the bottom number.</small>
+          </div>
+        </div>
+
+        <fieldset class="question-setting">
+          <legend>Number of Questions</legend>
+          <div id="questionOptions" class="question-options"></div>
+        </fieldset>
+
+        <div id="configMessage" class="message hidden" role="alert"></div>
+        <button id="startPracticeBtn" class="primary-button" type="button">START PRACTICE 🚀</button>
+      </div>
+    </section>
+
+    <section id="practiceScreen" class="screen" aria-labelledby="practiceTitle">
+      <div class="practice-card">
+        <div class="practice-top">
+          <div>
+            <p class="eyebrow" id="practiceTitle">ADDITION</p>
+            <p id="questionProgress" class="progress-text">Question 1 of 10</p>
+          </div>
+          <button id="practiceEndBtn" class="outline-button" type="button">End Session</button>
+        </div>
+
+        <div class="problem-area" aria-live="polite">
+          <div id="problemDisplay" class="problem-display"></div>
+          <div id="answerLine" class="answer-line">
+            <span class="answer-equals">=</span>
+            <input id="answerInput" class="answer-input" inputmode="numeric" autocomplete="off"
+                   aria-label="Your answer" maxlength="12">
+          </div>
+        </div>
+
+        <div class="practice-actions">
+          <button id="submitAnswerBtn" class="primary-button" type="button">SUBMIT ANSWER</button>
+          <button id="helpBtn" class="secondary-button hidden" type="button">NEED HELP?</button>
+        </div>
+
+        <div id="feedbackPanel" class="feedback-panel hidden" aria-live="polite"></div>
+        <div id="helpPanel" class="help-panel hidden"></div>
+        <div id="practiceNextActions" class="next-actions hidden"></div>
+      </div>
+    </section>
+
+    <section id="summaryScreen" class="screen" aria-labelledby="summaryTitle">
+      <div class="summary-card">
+        <div class="summary-icon" aria-hidden="true">🏆</div>
+        <h2 id="summaryTitle">Session Results</h2>
+        <p id="summaryMessage" class="subtitle">Great effort!</p>
+        <div id="summaryStats" class="stats-grid"></div>
+        <div id="operationStats" class="operation-stats"></div>
+        <div class="summary-actions">
+          <button id="newSessionBtn" class="primary-button" type="button">START NEW SESSION</button>
+          <button id="summaryChangeBtn" class="secondary-button" type="button">CHANGE PROBLEM TYPE</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="confirmModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal-card">
+      <h2 id="confirmTitle">End this practice session?</h2>
+      <p>Your current progress will be kept until you start a new session.</p>
+      <div class="modal-actions">
+        <button id="confirmEndBtn" class="danger-button" type="button">YES, END SESSION</button>
+        <button id="cancelEndBtn" class="secondary-button" type="button">CONTINUE PRACTICE</button>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    <div class="noscript">JavaScript is required for this mathematics practice application.</div>
+  </noscript>
+  <script src="js/app.js"></script>
+</body>
+</html>

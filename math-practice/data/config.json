@@ -1,0 +1,85 @@
+{
+  "digitOptions": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "questionOptions": [
+    5,
+    10,
+    20,
+    30
+  ],
+  "multiplicationTableMax": 10,
+  "operations": {
+    "addition": {
+      "label": "ADDITION",
+      "icon": "\u2795",
+      "upperDigits": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "lowerDigits": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "subtraction": {
+      "label": "SUBTRACTION",
+      "icon": "\u2796",
+      "upperDigits": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "lowerDigits": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "multiplication": {
+      "label": "MULTIPLICATION",
+      "icon": "\u2716\ufe0f",
+      "upperDigits": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "lowerDigits": [
+        1,
+        2,
+        3
+      ]
+    },
+    "division": {
+      "label": "DIVISION",
+      "icon": "\u2797",
+      "upperDigits": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "lowerDigits": [
+        1,
+        2,
+        3
+      ]
+    }
+  }
+}
