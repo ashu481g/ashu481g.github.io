@@ -36,8 +36,3 @@ The app also has built-in JavaScript defaults, so the core application does not 
 - Keyboard Enter submission and visible focus states.
 - Optional localStorage for last-used preferences.
 - No backend, database, API or external library.
-
-
-## Additional learning tabs
-- **English / Hindi Comics**: three short, child-friendly comic stories with an English/Hindi switch.
-- **Daily Super Car**: a date-based daily featured supercar with a locally generated stylized illustration and a short fact. The feature works offline and does not require an external image service.
