@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IIM Lucknow Revision Portal</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f7fb;color:#172033}
+header{background:#14213d;color:#fff;padding:24px 5vw;position:sticky;top:0;z-index:10}
+header h1{margin:0 0 6px;font-size:28px}
+header p{margin:0;color:#d9e2f2}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+input,select{padding:11px 13px;border-radius:8px;border:1px solid #ccd3df;font-size:14px;background:#fff}
+main{width:min(1200px,90vw);margin:28px auto}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+.stat{background:#fff;border:1px solid #e1e6ef;border-radius:12px;padding:15px 18px}
+.stat strong{display:block;font-size:23px;margin-top:4px}
+.dashboard{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-bottom:24px}
+.panel{background:#fff;border:1px solid #e1e6ef;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.panel h2{margin:0 0 14px;font-size:19px}
+.subject-row{margin:11px 0}
+.subject-head{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:5px}
+.bar{height:8px;background:#e7ebf2;border-radius:10px;overflow:hidden}
+.fill{height:100%;background:#526d9b;width:0}
+.queue-item{padding:10px 0;border-bottom:1px solid #edf0f5}
+.queue-item:last-child{border-bottom:0}
+.queue-item small{display:block;color:#64748b;margin-top:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:18px}
+.card{background:#fff;border:1px solid #e1e6ef;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card h2{margin:0 0 5px;font-size:20px}
+.card h3{margin-bottom:8px}
+.code{font-size:12px;font-weight:700;letter-spacing:.08em;color:#53637a}
+.modules{margin:14px 0;padding-left:20px}
+.modules li{margin:7px 0}
+.video{display:block;padding:10px 12px;margin:8px 0;background:#f0f4fa;border-radius:8px;text-decoration:none;color:#183a69}
+.video:hover{text-decoration:underline}
+.tag{display:inline-block;background:#eef1f6;border-radius:20px;padding:5px 9px;margin:3px;font-size:12px}
+.overlap{margin-top:15px;padding-top:12px;border-top:1px solid #e7ebf2}
+.overlap strong{font-size:13px}
+.progress{margin-top:15px}
+.progress label{font-size:13px}
+button{border:0;border-radius:8px;padding:9px 12px;cursor:pointer;background:#14213d;color:#fff}
+button.secondary{background:#526d9b}
+.empty{color:#64748b;font-size:13px}
+footer{width:min(1200px,90vw);margin:30px auto 50px;color:#64748b;font-size:13px}
+@media(max-width:800px){.dashboard{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>IIM Lucknow Revision Portal</h1>
+  <p>Video-supported revision for the current 7 subjects. More subjects can be added through <b>subjects.json</b>.</p>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Search subject, module or overlap...">
+    <select id="filter"><option value="all">All subjects</option></select>
+    <button id="reset">Reset progress</button>
+  </div>
+</header>
+
+<main>
+  <section class="summary">
+    <div class="stat">Subjects<strong id="subjectCount">0</strong></div>
+    <div class="stat">Modules<strong id="moduleCount">0</strong></div>
+    <div class="stat">Completed modules<strong id="completedCount">0</strong></div>
+    <div class="stat">Overall completion<strong id="overallPct">0%</strong></div>
+  </section>
+
+  <section class="dashboard">
+    <div class="panel">
+      <h2>Revision Dashboard — Subject-wise Progress</h2>
+      <div id="subjectProgress"></div>
+    </div>
+    <div class="panel">
+      <h2>Revise Now Queue</h2>
+      <div id="reviseQueue"></div>
+    </div>
+  </section>
+
+  <section class="dashboard">
+    <div class="panel">
+      <h2>Pending Modules</h2>
+      <div id="pendingList"></div>
+    </div>
+    <div class="panel">
+      <h2>Recently Completed</h2>
+      <div id="recentList"></div>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-bottom:24px">
+    <h2>Cross-Subject Overlap Map</h2>
+    <p class="empty">Overlapping topics are intentionally retained in each subject. The tags show where the same or closely related concept appears elsewhere, so the portal does not silently merge subjects.</p>
+    <div id="overlapMap"></div>
+  </section>
+
+  <section id="grid" class="grid"></section>
+</main>
+
+<footer>
+  MVP: static HTML + JSON + browser localStorage. Professor material remains the primary syllabus; external videos are revision aids and are not treated as evidence that a topic was taught.
+</footer>
+
+<script>
+let subjects=[];
+const key='iiml_revision_progress_v2';
+let progress=JSON.parse(localStorage.getItem(key)||'{}');
+
+function normaliseProgress(){
+  let changed=false;
+  Object.keys(progress).forEach(k=>{
+    if(typeof progress[k]==='boolean'){
+      progress[k]={done:progress[k], completedAt:progress[k]?Date.now():null};
+      changed=true;
+    }
+  });
+  if(changed)localStorage.setItem(key,JSON.stringify(progress));
+}
+normaliseProgress();
+
+function isDone(k){return !!(progress[k] && progress[k].done)}
+function save(){localStorage.setItem(key,JSON.stringify(progress))}
+
+async function load(){
+  const r=await fetch('subjects.json');
+  subjects=await r.json();
+  const filter=document.getElementById('filter');
+  subjects.forEach(s=>{
+    const o=document.createElement('option');
+    o.value=s.id;
+    o.textContent=s.code+' – '+s.name;
+    filter.appendChild(o);
+  });
+  render();
+}
+
+function totals(){
+  const total=subjects.reduce((a,s)=>a+s.modules.length,0);
+  const done=subjects.reduce((a,s)=>a+s.modules.filter((_,i)=>isDone(s.id+'_'+i)).length,0);
+  return {total,done,pct:total?Math.round(done/total*100):0};
+}
+
+function renderDashboard(){
+  const {total,done,pct}=totals();
+  document.getElementById('subjectCount').textContent=subjects.length;
+  document.getElementById('moduleCount').textContent=total;
+  document.getElementById('completedCount').textContent=done;
+  document.getElementById('overallPct').textContent=pct+'%';
+
+  document.getElementById('subjectProgress').innerHTML=subjects.map(s=>{
+    const d=s.modules.filter((_,i)=>isDone(s.id+'_'+i)).length;
+    const p=s.modules.length?Math.round(d/s.modules.length*100):0;
+    return `<div class="subject-row">
+      <div class="subject-head"><span><b>${s.code}</b> — ${s.name}</span><span>${d}/${s.modules.length} (${p}%)</span></div>
+      <div class="bar"><div class="fill" style="width:${p}%"></div></div>
+    </div>`;
+  }).join('');
+
+  const pending=[];
+  subjects.forEach(s=>s.modules.forEach((m,i)=>{
+    if(!isDone(s.id+'_'+i)) pending.push({subject:s, module:m, index:i});
+  }));
+  const queue=pending.slice(0,6);
+  document.getElementById('reviseQueue').innerHTML=queue.length
+    ? queue.map(x=>`<div class="queue-item"><b>${x.subject.code}</b> — ${x.module}<small>Pending module · use the subject card below to mark complete</small></div>`).join('')
+    : '<div class="empty">All modules are currently marked complete.</div>';
+
+  document.getElementById('pendingList').innerHTML=pending.length
+    ? pending.slice(0,20).map(x=>`<div class="queue-item"><b>${x.subject.code}</b> — ${x.module}</div>`).join('') +
+      (pending.length>20?`<div class="empty">Showing first 20 of ${pending.length} pending modules.</div>`:'')
+    : '<div class="empty">No pending modules.</div>';
+
+  const recent=Object.entries(progress)
+    .filter(([,v])=>v && v.done && v.completedAt)
+    .sort((a,b)=>b[1].completedAt-a[1].completedAt)
+    .slice(0,8)
+    .map(([k,v])=>{
+      const [sid,idx]=k.split('_');
+      const s=subjects.find(x=>x.id===sid);
+      return s?{subject:s,module:s.modules[Number(idx)],at:v.completedAt}:null;
+    }).filter(Boolean);
+
+  document.getElementById('recentList').innerHTML=recent.length
+    ? recent.map(x=>`<div class="queue-item"><b>${x.subject.code}</b> — ${x.module}<small>${new Date(x.at).toLocaleString()}</small></div>`).join('')
+    : '<div class="empty">Complete a module to start the recent-history list.</div>';
+
+  const overlaps=[];
+  subjects.forEach(s=>s.overlaps.forEach(o=>overlaps.push(`<span class="tag"><b>${s.code}</b> · ${o}</span>`)));
+  document.getElementById('overlapMap').innerHTML=overlaps.join('');
+}
+
+function render(){
+  renderDashboard();
+  const q=document.getElementById('search').value.toLowerCase().trim();
+  const f=document.getElementById('filter').value;
+  const list=subjects.filter(s=>{
+    if(f!=='all'&&s.id!==f)return false;
+    if(!q)return true;
+    return (s.name+' '+s.code+' '+s.modules.join(' ')+' '+s.overlaps.join(' ')).toLowerCase().includes(q);
+  });
+
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  list.forEach(s=>{
+    const done=s.modules.filter((_,i)=>isDone(s.id+'_'+i)).length;
+    const card=document.createElement('article');
+    card.className='card';
+    card.innerHTML=`<div class="code">${s.code}</div><h2>${s.name}</h2>
+      <div class="progress"><label>${done}/${s.modules.length} modules completed</label>
+      <div class="bar"><div class="fill" style="width:${s.modules.length?done/s.modules.length*100:0}%"></div></div></div>
+      <h3>Revision modules</h3>
+      <ol class="modules">${s.modules.map((m,i)=>`<li><label><input type="checkbox" data-key="${s.id}_${i}" ${isDone(s.id+'_'+i)?'checked':''}> ${m}</label></li>`).join('')}</ol>
+      <h3>Video resources</h3>
+      ${s.videos.map(v=>`<a class="video" href="${v.url}" target="_blank" rel="noopener"><b>${v.title}</b><br><small>${v.provider} · ${v.type}</small></a>`).join('')}
+      <div class="overlap"><strong>Cross-subject overlap</strong><br>${s.overlaps.map(x=>`<span class="tag">${x}</span>`).join('')}</div>`;
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change',e=>{
+    progress[e.target.dataset.key]={
+      done:e.target.checked,
+      completedAt:e.target.checked?Date.now():null
+    };
+    save();
+    render();
+  }));
+}
+
+document.getElementById('search').addEventListener('input',render);
+document.getElementById('filter').addEventListener('change',render);
+document.getElementById('reset').addEventListener('click',()=>{
+  if(confirm('Reset all module progress and recent-completion history?')){
+    progress={};
+    save();
+    render();
+  }
+});
+load();
+</script>
+</body>
+</html>
