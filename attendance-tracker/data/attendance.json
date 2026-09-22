@@ -1,0 +1,20 @@
+[
+  {
+    "id": "ATT001",
+    "subjectId": "SUB001",
+    "date": "2026-09-15",
+    "status": "Present",
+    "remarks": "",
+    "createdAt": "2026-09-15T09:05:00.000Z",
+    "updatedAt": "2026-09-15T09:05:00.000Z"
+  },
+  {
+    "id": "ATT002",
+    "subjectId": "SUB001",
+    "date": "2026-09-17",
+    "status": "Absent",
+    "remarks": "",
+    "createdAt": "2026-09-17T09:05:00.000Z",
+    "updatedAt": "2026-09-17T09:05:00.000Z"
+  }
+]
