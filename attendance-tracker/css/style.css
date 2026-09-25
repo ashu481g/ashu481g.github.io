@@ -468,3 +468,67 @@ textarea { resize: vertical; }
   .ledger-strip { padding: 0.8rem 0; }
   .ledger-strip > div { min-width: 100px; padding: 0 0.8rem; margin-bottom: 0.6rem; }
 }
+
+/* ===== Sign-in / loading overlay (auth.js) ===== */
+.auth-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--paper); padding: 1rem;
+}
+.auth-overlay[hidden] { display: none; }
+.auth-card {
+  width: 100%; max-width: 360px;
+  background: var(--surface);
+  border: 1px solid var(--paper-line);
+  border-top: 4px solid var(--spine);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+}
+.auth-card h2 { margin-bottom: 0.4em; }
+.auth-card form { display: flex; flex-direction: column; gap: 0.45rem; }
+.auth-card label { font-size: 0.9rem; font-weight: 500; color: var(--ink-soft); }
+.auth-card input {
+  font: inherit; padding: 0.55rem 0.65rem;
+  border: 1px solid var(--paper-line); border-radius: var(--radius);
+  background: #fff; color: var(--ink);
+}
+.auth-card input:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
+.auth-card button { margin-top: 0.6rem; }
+.auth-note { color: var(--ink-soft); margin: 0 0 1rem; }
+.auth-error { color: var(--danger); font-size: 0.9rem; margin: 0.2rem 0 0; }
+
+/* ===== Account box at the bottom of the spine ===== */
+.spine-account {
+  margin-top: auto;
+  padding: 1rem 1.4rem 0;
+  border-top: 1px solid rgba(231, 239, 228, 0.18);
+  display: flex; flex-direction: column; gap: 0.35rem;
+  font-size: 0.82rem; color: var(--spine-text-dim);
+}
+.spine-account-email { overflow-wrap: anywhere; }
+.spine-signout {
+  align-self: flex-start;
+  background: none; border: 1px solid rgba(231, 239, 228, 0.35);
+  color: var(--spine-text); border-radius: var(--radius);
+  padding: 0.25rem 0.6rem; font: inherit; cursor: pointer;
+}
+.spine-signout:hover { background: rgba(231, 239, 228, 0.08); }
+
+/* ===== Save-failed banner ===== */
+.sync-banner {
+  position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%);
+  z-index: 900; max-width: calc(100% - 2rem);
+  display: flex; gap: 0.8rem; align-items: center;
+  background: var(--danger-dark); color: #fff;
+  padding: 0.7rem 1rem; border-radius: var(--radius);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+.sync-banner[hidden] { display: none; }
+.sync-banner-btn {
+  background: #fff; color: var(--danger-dark); border: 0;
+  border-radius: var(--radius); padding: 0.3rem 0.7rem; font: inherit; cursor: pointer;
+}
+@media (max-width: 768px) {
+  .spine-account { margin: 0 0 0 0.4rem; padding: 0; border: 0; }
+  .spine-account-email { display: none; }
+}

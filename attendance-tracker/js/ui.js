@@ -1,6 +1,6 @@
 // ui.js — rendering and event wiring. This is the only module that
 // touches the DOM. It calls into subjects.js / attendance.js / reports.js
-// / storage.js for everything else; it never reads or writes localStorage
+// / storage.js for everything else; it never talks to the database
 // directly.
 
 import * as subjectsApi from './subjects.js';
@@ -271,7 +271,7 @@ function wireSubjectForm() {
 }
 
 // Keeps the Record and Reports subject dropdowns in sync with the subject list.
-function populateSubjectSelects() {
+export function populateSubjectSelects() {
   const subjects = subjectsApi.listSubjects();
   const options = subjects.map((s) => `<option value="${s.id}">${escapeHtml(s.name)}${s.code ? ` (${escapeHtml(s.code)})` : ''}</option>`).join('');
 
@@ -494,12 +494,16 @@ async function handleImport() {
 
   const confirmed = await confirmDialog(
     'Replace current data?',
-    'Importing this file will replace the current attendance data in this browser. Do you want to continue?',
+    'Importing this file will replace all attendance data in your account, on every device. Do you want to continue?',
     { confirmLabel: 'Import' }
   );
   if (!confirmed) return;
 
-  storage.restoreFromBackup(data);
+  const saved = await storage.restoreFromBackup(data);
+  if (!saved) {
+    showToast('Import could not be saved to the server. Reload and try again.', true);
+    return;
+  }
   showToast('Data imported successfully.');
   populateSubjectSelects();
   showView('dashboard');
@@ -509,7 +513,7 @@ async function handleImport() {
 async function handleReset() {
   const firstConfirm = await confirmDialog(
     'Reset all data',
-    'This will permanently delete all subjects and attendance records stored in this browser. Make sure you have exported a backup before continuing.',
+    'This will permanently delete all subjects and attendance records in your account, on every device. Make sure you have exported a backup before continuing.',
     { confirmLabel: 'Continue' }
   );
   if (!firstConfirm) return;
@@ -521,7 +525,11 @@ async function handleReset() {
   );
   if (!secondConfirm) return;
 
-  storage.resetAllData();
+  const cleared = await storage.resetAllData();
+  if (!cleared) {
+    showToast('Reset could not be completed on the server. Reload and try again.', true);
+    return;
+  }
   showToast('All data has been reset.');
   populateSubjectSelects();
   showView('dashboard');
