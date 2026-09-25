@@ -9,5 +9,5 @@
 //
 // NEVER put the SECRET key (sb_secret_...) or the legacy service_role key here.
 
-export const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co';
-export const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_REPLACE_ME';
+export const SUPABASE_URL = 'https://cjhyaqmgqayirlkcyssd.supabase.co';
+export const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_dSwHlJmJrw_XpIc3ITUd2w_zIRV1_U9';
