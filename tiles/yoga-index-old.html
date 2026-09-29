@@ -133,6 +133,39 @@
     width: 7px; height: 7px; border-radius: 50%;
     background: var(--sun); display: inline-block;
   }
+  section.extra { margin-top: 3rem; }
+  section.extra[hidden] { display: none; }
+  h2 {
+    font-family: "Young Serif", Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    margin: 0 0 0.35rem;
+  }
+  .hint { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+  .list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .list li { border-bottom: 1px solid var(--line); }
+  .item {
+    display: flex; align-items: center; gap: 0.9rem;
+    width: 100%;
+    padding: 0.9rem 0.25rem;
+    background: none; border: 0;
+    color: var(--ink); font: inherit; text-align: left;
+    text-decoration: none; cursor: pointer;
+  }
+  .item:hover .name { text-decoration: underline; text-underline-offset: 3px; }
+  .item:focus-visible { outline: 3px solid var(--sage); outline-offset: 2px; }
+  .item[aria-current="true"] .name { color: var(--sage); font-weight: 600; }
+  .icon {
+    flex: none;
+    width: 2.25rem; height: 2.25rem;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font-size: 0.8rem; font-weight: 600; color: var(--muted);
+  }
+  .name { flex: 1; }
+  .action { color: var(--muted); font-size: 0.85rem; flex: none; }
   @media (max-width: 420px) {
     .week { gap: 0.3rem; }
     .day { font-size: 0.8rem; }
@@ -157,6 +190,18 @@
 
   <nav class="week" id="week" aria-label="Choose a day"></nav>
   <p class="legend"><span></span> Today</p>
+
+  <section class="extra" id="breathingSection" hidden>
+    <h2>Breathing &amp; Pranayam</h2>
+    <p class="hint">Pick any session to play it in the player above.</p>
+    <ul class="list" id="breathingList"></ul>
+  </section>
+
+  <section class="extra" id="pdfSection" hidden>
+    <h2>Reading material</h2>
+    <p class="hint">Each document opens in a new tab.</p>
+    <ul class="list" id="pdfList"></ul>
+  </section>
 </main>
 
 <script>
@@ -191,13 +236,118 @@
     buttons[i] = b;
   });
 
+  // ── Paste the output of the Apps Script here (replace these two lines) ──
+  const BREATHING = [
+ {
+  "name": "4-7-8-breathing-timer-breathingmeditation.mp3",
+  "id": "1Z6D8uPrlynrv3KkbORqWp8IY5k6lCeJC",
+  "kind": "audio"
+ },
+ {
+  "name": "PRANAYAM COUNTS IN HINDI ART OF LIVING.m4a",
+  "id": "1OEwKq_FsdEb_uwWdrUuVMDzLPNP_r3fQ",
+  "kind": "audio"
+ },
+ {
+  "name": "Special Breathing Session for 9th FEB ‪@saurabhbothra.mp4",
+  "id": "1jq2QioEfndRlC-upSg3HWm2ZLri3OcDc",
+  "kind": "video"
+ }
+];
+const PDFS = [
+ {
+  "name": "Diabetes Reversal Recipe Handbook.pdf",
+  "id": "1eoEWU1W4IJfWtKmdneXGBrYu9h6OuYN9"
+ },
+ {
+  "name": "freeyoga_Prakriti_handbook.pdf",
+  "id": "1tjvLcU3994FUIdUv1ShCJcd5JDcuEYWh"
+ },
+ {
+  "name": "Habuild Pranayama Handbook.pdf",
+  "id": "1HE85wSPdQnnFTxcGTwoACVJE1VcyNAre"
+ },
+ {
+  "name": "Habuild Yoga Handbook.pdf",
+  "id": "1dN27ehD57xQRI-kt9jusT10UbVKZTtHe"
+ },
+ {
+  "name": "Immunity Booster recipe Handbook.pdf",
+  "id": "1YlCH7eoI30d8sFQiT0cB7PUP4JZSKhCD"
+ },
+ {
+  "name": "Millets Handbook.pdf",
+  "id": "10sWRi2XjrchlPaN7CiRmRfRY5HMFYJTD"
+ },
+ {
+  "name": "Recovery_Drinks_Handbook.pdf",
+  "id": "1VibcrWW1OkwHU0x_LSKiRY014lbZ1Edk"
+ },
+ {
+  "name": "Summer Drinks Handbook.pdf",
+  "id": "15h15Emq8FWGMODrOpH3vVlFxbkOOCRZv"
+ },
+ {
+  "name": "Summer Skincare Recipe.pdf",
+  "id": "1hVahztBNHC4wRS7DKiiM9Aoy6Vv3elWV"
+ }
+];
+  // ────────────────────────────────────────────────────────────────────────
+
+  const clean = n => n.replace(/\.(mp4|mov|mkv|pdf|mp3|m4a|wav|aac|ogg)$/i, "").replace(/[｜|]/g, "·").trim();
+  const breathingButtons = [];
+
+  function load(id, heading, subtitle) {
+    document.getElementById("dayName").textContent = heading;
+    document.getElementById("session").textContent = subtitle;
+    document.getElementById("video").src = "https://drive.google.com/file/d/" + id + "/preview";
+    document.getElementById("driveLink").href = "https://drive.google.com/file/d/" + id + "/view";
+  }
+
   function show(i) {
     const s = SESSIONS[i];
-    document.getElementById("dayName").textContent = i === todayIdx ? "Today, " + s.day : s.day;
-    document.getElementById("session").textContent = s.title;
-    document.getElementById("video").src = "https://drive.google.com/file/d/" + s.id + "/preview";
-    document.getElementById("driveLink").href = "https://drive.google.com/file/d/" + s.id + "/view";
+    load(s.id, i === todayIdx ? "Today, " + s.day : s.day, s.title);
     Object.entries(buttons).forEach(([k, b]) => b.setAttribute("aria-pressed", String(Number(k) === i)));
+    breathingButtons.forEach(b => b.removeAttribute("aria-current"));
+  }
+
+  function showBreathing(idx) {
+    load(BREATHING[idx].id, "Breathing & Pranayam", clean(BREATHING[idx].name));
+    Object.values(buttons).forEach(b => b.setAttribute("aria-pressed", "false"));
+    breathingButtons.forEach((b, k) => b.setAttribute("aria-current", String(k === idx)));
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.querySelector(".player").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+  }
+
+  if (BREATHING.length) {
+    const ul = document.getElementById("breathingList");
+    BREATHING.forEach((v, idx) => {
+      const li = document.createElement("li");
+      const b = document.createElement("button");
+      const isAudio = v.kind === "audio" || /\.(mp3|m4a|wav|aac|ogg)$/i.test(v.name);
+      b.className = "item";
+      b.innerHTML = '<span class="icon">' + (isAudio ? "♪" : idx + 1) + '</span><span class="name"></span><span class="action">' + (isAudio ? "Listen" : "Play") + '</span>';
+      b.querySelector(".name").textContent = clean(v.name);
+      b.addEventListener("click", () => showBreathing(idx));
+      li.appendChild(b); ul.appendChild(li);
+      breathingButtons.push(b);
+    });
+    document.getElementById("breathingSection").hidden = false;
+  }
+
+  if (PDFS.length) {
+    const ul = document.getElementById("pdfList");
+    PDFS.forEach(p => {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.className = "item";
+      a.href = "https://drive.google.com/file/d/" + p.id + "/view";
+      a.target = "_blank"; a.rel = "noopener";
+      a.innerHTML = '<span class="icon">PDF</span><span class="name"></span><span class="action">Open</span>';
+      a.querySelector(".name").textContent = clean(p.name);
+      li.appendChild(a); ul.appendChild(li);
+    });
+    document.getElementById("pdfSection").hidden = false;
   }
 
   show(todayIdx);

@@ -42,9 +42,31 @@
     line-height: 1.5;
   }
   main {
-    max-width: 880px;
+    max-width: 1360px;
     margin: 0 auto;
     padding: 2rem 1.25rem 3rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "center" "breath" "books";
+    gap: 3rem;
+    align-items: start;
+  }
+  .center { grid-area: center; min-width: 0; }
+  #breathingSection { grid-area: breath; }
+  #pdfSection { grid-area: books; }
+  @media (min-width: 1080px) {
+    main {
+      grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(220px, 300px);
+      grid-template-areas: "books center breath";
+      gap: 2.5rem;
+    }
+    section.extra {
+      position: sticky;
+      top: calc(1.5rem + env(safe-area-inset-top, 0px));
+      max-height: calc(100vh - 3rem);
+      overflow-y: auto;
+      padding-top: 0.4rem;
+    }
   }
   header { margin-bottom: 1.5rem; }
   .date {
@@ -133,7 +155,7 @@
     width: 7px; height: 7px; border-radius: 50%;
     background: var(--sun); display: inline-block;
   }
-  section.extra { margin-top: 3rem; }
+  section.extra { margin-top: 0; min-width: 0; }
   section.extra[hidden] { display: none; }
   h2 {
     font-family: "Young Serif", Georgia, "Times New Roman", serif;
@@ -177,30 +199,32 @@
 </head>
 <body>
 <main>
-  <header>
-    <p class="date" id="date"></p>
-    <h1 id="dayName">Loading…</h1>
-    <p class="session" id="session"></p>
-  </header>
+  <section class="extra" id="pdfSection" hidden>
+    <h2>Books</h2>
+    <p class="hint">Each book opens in a new tab.</p>
+    <ul class="list" id="pdfList"></ul>
+  </section>
 
-  <div class="player">
-    <iframe id="video" title="Yoga session video" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  <div class="center">
+    <header>
+      <p class="date" id="date"></p>
+      <h1 id="dayName">Loading…</h1>
+      <p class="session" id="session"></p>
+    </header>
+
+    <div class="player">
+      <iframe id="video" title="Yoga session video" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <p class="fallback">Not loading? <a id="driveLink" href="#" target="_blank" rel="noopener">Open it in Google Drive</a></p>
+
+    <nav class="week" id="week" aria-label="Choose a day"></nav>
+    <p class="legend"><span></span> Today</p>
   </div>
-  <p class="fallback">Video not loading? <a id="driveLink" href="#" target="_blank" rel="noopener">Open it in Google Drive</a></p>
-
-  <nav class="week" id="week" aria-label="Choose a day"></nav>
-  <p class="legend"><span></span> Today</p>
 
   <section class="extra" id="breathingSection" hidden>
     <h2>Breathing &amp; Pranayam</h2>
-    <p class="hint">Pick any session to play it in the player above.</p>
+    <p class="hint">Pick a session to play it in the main player.</p>
     <ul class="list" id="breathingList"></ul>
-  </section>
-
-  <section class="extra" id="pdfSection" hidden>
-    <h2>Reading material</h2>
-    <p class="hint">Each document opens in a new tab.</p>
-    <ul class="list" id="pdfList"></ul>
   </section>
 </main>
 
