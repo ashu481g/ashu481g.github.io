@@ -99,6 +99,43 @@
     width: 100%; height: 100%;
     border: 0;
   }
+  .audio-panel {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    color: var(--ink);
+    text-align: center;
+  }
+  .audio-panel[hidden] { display: none; }
+  .round {
+    font-family: "Young Serif", Georgia, "Times New Roman", serif;
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    margin: 0;
+  }
+  .repeat { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; justify-content: center; }
+  .repeat-label { color: var(--muted); font-size: 0.9rem; margin-right: 0.25rem; }
+  .rep {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit; font-weight: 500; font-size: 0.9rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .rep:focus-visible { outline: 3px solid var(--sage); outline-offset: 2px; }
+  .rep[aria-pressed="true"] { background: var(--sage); border-color: var(--sage); color: #fff; }
+  .total { margin: 0; color: var(--muted); font-size: 0.9rem; min-height: 1.35em; }
+  .audio-panel audio { width: min(100%, 420px); }
+  @media (max-width: 520px) {
+    .player:has(.audio-panel:not([hidden])) { aspect-ratio: auto; min-height: 300px; }
+  }
   .fallback {
     margin: 0.75rem 0 0;
     font-size: 0.9rem;
@@ -214,6 +251,17 @@
 
     <div class="player">
       <iframe id="video" title="Yoga session video" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="audio-panel" id="audioPanel" hidden>
+        <p class="round" id="round">Ready</p>
+        <div class="repeat" role="group" aria-label="How many times to play">
+          <span class="repeat-label">Repeat</span>
+          <button type="button" class="rep" data-n="1">Once</button>
+          <button type="button" class="rep" data-n="15">15 times</button>
+          <button type="button" class="rep" data-n="30">30 times</button>
+        </div>
+        <p class="total" id="total"></p>
+        <audio id="audio" controls preload="metadata"></audio>
+      </div>
     </div>
     <p class="fallback">Not loading? <a id="driveLink" href="#" target="_blank" rel="noopener">Open it in Google Drive</a></p>
 
@@ -273,7 +321,7 @@
   "kind": "audio"
  },
  {
-  "name": "Special Breathing Session for 9th FEB ‪@saurabhbothra.mp4",
+  "name": "Special Breathing Session ‪@saurabhbothra.mp4",
   "id": "1jq2QioEfndRlC-upSg3HWm2ZLri3OcDc",
   "kind": "video"
  }
@@ -318,14 +366,100 @@ const PDFS = [
 ];
   // ────────────────────────────────────────────────────────────────────────
 
-  const clean = n => n.replace(/\.(mp4|mov|mkv|pdf|mp3|m4a|wav|aac|ogg)$/i, "").replace(/[｜|]/g, "·").trim();
-  const breathingButtons = [];
+  // Turn file names into readable titles: drop extension, dates, weekday names and stray separators
+  const MONTHS = "(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\\.?";
+  const DATE_PATTERNS = [
+    new RegExp("\\b\\d{1,2}(?:st|nd|rd|th)?[\\s\\-_]*" + MONTHS + "(?:[\\s,\\-_]*\\d{4}|[\\s,\\-_]+\\d{2})?\\b", "gi"), // 1st Feb 2025
+    new RegExp("\\b" + MONTHS + "[\\s\\-_]*\\d{1,2}(?:st|nd|rd|th)?(?:[\\s,\\-_]*\\d{4})?\\b", "gi"),                  // Feb 1, 2025
+    /\b\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{4}\b/g,   // 01-02-2025
+    /\b\d{4}[\/\-.]\d{1,2}[\/\-.]\d{1,2}\b/g,   // 2025-02-01
+    /\b\d{1,2}[\/.]\d{1,2}[\/.]\d{2}\b/g,       // 01/02/25
+    /\b(?:mon|tues|wednes|thurs|fri|satur|sun)day\b/gi
+  ];
+  function clean(n) {
+    let t = n.replace(/\.(mp4|mov|mkv|webm|pdf|mp3|m4a|wav|aac|ogg)$/i, "").replace(/_/g, " ");
+    DATE_PATTERNS.forEach(re => { t = t.replace(re, " "); });
+    t = t.replace(/(?<!\d)-|-(?!\d)/g, " ")          // hyphens become spaces, but keep 4-7-8
+         .replace(/\s*[｜|·]\s*/g, " · ")
+         .replace(/(\s·\s*)+/g, " · ")
+         .replace(/\s+/g, " ")
+         .replace(/^[\s·,]+|[\s·,]+$/g, "");
+    return t || n;
+  }
 
-  function load(id, heading, subtitle) {
+  const breathingButtons = [];
+  const videoEl = document.getElementById("video");
+  const panel = document.getElementById("audioPanel");
+  const audio = document.getElementById("audio");
+  const roundEl = document.getElementById("round");
+  const totalEl = document.getElementById("total");
+  const repButtons = [...document.querySelectorAll(".rep")];
+  let target = 1, played = 0;
+
+  function setHeading(heading, subtitle) {
     document.getElementById("dayName").textContent = heading;
     document.getElementById("session").textContent = subtitle;
-    document.getElementById("video").src = "https://drive.google.com/file/d/" + id + "/preview";
+  }
+
+  function stopAudio() {
+    audio.pause();
+    panel.hidden = true;
+    videoEl.hidden = false;
+  }
+
+  function load(id, heading, subtitle) {
+    stopAudio();
+    setHeading(heading, subtitle);
+    videoEl.src = "https://drive.google.com/file/d/" + id + "/preview";
     document.getElementById("driveLink").href = "https://drive.google.com/file/d/" + id + "/view";
+  }
+
+  function fmt(sec) {
+    const m = Math.floor(sec / 60), s = Math.round(sec % 60);
+    return m ? m + " min" + (s ? " " + s + " s" : "") : s + " s";
+  }
+  function updateRound() {
+    roundEl.textContent = target === 1 ? (played ? "Done" : "Ready")
+      : (played >= target ? "Done · " + target + " rounds" : "Round " + Math.min(played + 1, target) + " of " + target);
+    totalEl.textContent = isFinite(audio.duration) && audio.duration > 0
+      ? "Total about " + fmt(audio.duration * target) : "";
+  }
+  function setTarget(n) {
+    target = n; played = 0;
+    repButtons.forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.n) === n)));
+    updateRound();
+  }
+  repButtons.forEach(b => b.addEventListener("click", () => {
+    setTarget(Number(b.dataset.n));
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }));
+
+  audio.addEventListener("loadedmetadata", () => {
+    // Short tracks like the 19-second 4-7-8 timer default to 15 repeats
+    if (audio.dataset.fresh === "1") { setTarget(audio.duration < 120 ? 15 : 1); audio.dataset.fresh = "0"; }
+    updateRound();
+  });
+  audio.addEventListener("ended", () => {
+    played++;
+    if (played < target) { audio.currentTime = 0; audio.play().catch(() => {}); }
+    updateRound();
+  });
+  audio.addEventListener("error", () => {
+    roundEl.textContent = "This track can't play here";
+    totalEl.textContent = "Use the Google Drive link below, or host the file with the page.";
+  });
+
+  function loadAudio(item, heading, subtitle) {
+    videoEl.src = "about:blank";
+    videoEl.hidden = true;
+    panel.hidden = false;
+    setHeading(heading, subtitle);
+    document.getElementById("driveLink").href = "https://drive.google.com/file/d/" + item.id + "/view";
+    audio.dataset.fresh = "1";
+    audio.src = item.src || ("https://drive.google.com/uc?export=download&id=" + item.id);
+    setTarget(1);
+    roundEl.textContent = "Loading…";
   }
 
   function show(i) {
@@ -335,8 +469,12 @@ const PDFS = [
     breathingButtons.forEach(b => b.removeAttribute("aria-current"));
   }
 
+  const isAudioItem = v => v.kind === "audio" || /\.(mp3|m4a|wav|aac|ogg)$/i.test(v.name);
+
   function showBreathing(idx) {
-    load(BREATHING[idx].id, "Breathing & Pranayam", clean(BREATHING[idx].name));
+    const item = BREATHING[idx];
+    if (isAudioItem(item)) loadAudio(item, "Breathing & Pranayam", clean(item.name));
+    else load(item.id, "Breathing & Pranayam", clean(item.name));
     Object.values(buttons).forEach(b => b.setAttribute("aria-pressed", "false"));
     breathingButtons.forEach((b, k) => b.setAttribute("aria-current", String(k === idx)));
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -348,7 +486,7 @@ const PDFS = [
     BREATHING.forEach((v, idx) => {
       const li = document.createElement("li");
       const b = document.createElement("button");
-      const isAudio = v.kind === "audio" || /\.(mp3|m4a|wav|aac|ogg)$/i.test(v.name);
+      const isAudio = isAudioItem(v);
       b.className = "item";
       b.innerHTML = '<span class="icon">' + (isAudio ? "♪" : idx + 1) + '</span><span class="name"></span><span class="action">' + (isAudio ? "Listen" : "Play") + '</span>';
       b.querySelector(".name").textContent = clean(v.name);
