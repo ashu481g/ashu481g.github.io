@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Today's Yoga</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧘</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EDF1EE;
+    --surface: #FFFFFF;
+    --ink: #1E2B3A;
+    --muted: #5F6F68;
+    --sage: #7C9A86;
+    --sun: #E3A72F;
+    --line: #D3DDD6;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141C24;
+      --surface: #1D2833;
+      --ink: #E8EEEA;
+      --muted: #9DB0A6;
+      --sage: #8FB09A;
+      --sun: #F0B84A;
+      --line: #2C3A46;
+    }
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+  }
+  header { margin-bottom: 1.5rem; }
+  .date {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0 0 0.25rem;
+  }
+  h1 {
+    font-family: "Young Serif", Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: clamp(2.25rem, 7vw, 3.5rem);
+    line-height: 1.05;
+    margin: 0;
+  }
+  .session {
+    font-size: 1.2rem;
+    color: var(--muted);
+    margin: 0.5rem 0 0;
+  }
+  .player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .player iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+  .fallback {
+    margin: 0.75rem 0 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .fallback a { color: var(--ink); text-underline-offset: 3px; }
+
+  .week {
+    margin-top: 2.25rem;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+  }
+  .day {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: 999px;
+    aspect-ratio: 1;
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    position: relative;
+    display: grid;
+    place-items: center;
+    transition: background-color .2s, border-color .2s;
+  }
+  .day:hover { border-color: var(--sage); }
+  .day:focus-visible { outline: 3px solid var(--sage); outline-offset: 3px; }
+  .day[aria-pressed="true"] {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: #fff;
+  }
+  .day.today::after {
+    content: "";
+    position: absolute;
+    bottom: -9px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--sun);
+  }
+  .legend {
+    margin: 1.1rem 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .legend span {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--sun); display: inline-block;
+  }
+  @media (max-width: 420px) {
+    .week { gap: 0.3rem; }
+    .day { font-size: 0.8rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .day { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="date" id="date"></p>
+    <h1 id="dayName">Loading…</h1>
+    <p class="session" id="session"></p>
+  </header>
+
+  <div class="player">
+    <iframe id="video" title="Yoga session video" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  </div>
+  <p class="fallback">Video not loading? <a id="driveLink" href="#" target="_blank" rel="noopener">Open it in Google Drive</a></p>
+
+  <nav class="week" id="week" aria-label="Choose a day"></nav>
+  <p class="legend"><span></span> Today</p>
+</main>
+
+<script>
+  // Index matches JavaScript's getDay(): 0 = Sunday … 6 = Saturday
+  const SESSIONS = [
+    { day: "Sunday",    title: "Face Yoga by Kashish Makhijani", id: "1KFa6751b46YLq7Ch-I8tNupXhB2WZOPI" },
+    { day: "Monday",    title: "Light Yoga & Breathing",         id: "1bGaAw8qS3PJLrAtaynHA5d5sJVngn2ej" },
+    { day: "Tuesday",   title: "Lower Body",                     id: "1hJBJhwe2yrPlJZXXULcbvvMZMl3K4LQU" },
+    { day: "Wednesday", title: "Upper Body",                     id: "1Mwwt3Qn_GWSQ7S9GyEsDYxjG0fE2P7ha" },
+    { day: "Thursday",  title: "Core & Laughter",                id: "1kyuIp2IkECr4eWZrZmgKA_AeluX9w45r" },
+    { day: "Friday",    title: "Flexibility",                    id: "1oh20L96CNaZfhOEGGLFZwamrQ2lAhQ7b" },
+    { day: "Saturday",  title: "Stamina & Meditation",           id: "1PCgFgZSk044CqAelcSozR9LB-jKaDYpx" }
+  ];
+  const WEEK_ORDER = [1, 2, 3, 4, 5, 6, 0]; // Mon → Sun
+
+  const now = new Date();
+  const todayIdx = now.getDay();
+
+  document.getElementById("date").textContent =
+    now.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+
+  const weekEl = document.getElementById("week");
+  const buttons = {};
+
+  WEEK_ORDER.forEach(i => {
+    const b = document.createElement("button");
+    b.className = "day" + (i === todayIdx ? " today" : "");
+    b.textContent = SESSIONS[i].day.slice(0, 3);
+    b.setAttribute("aria-label", SESSIONS[i].day + ": " + SESSIONS[i].title);
+    b.addEventListener("click", () => show(i));
+    weekEl.appendChild(b);
+    buttons[i] = b;
+  });
+
+  function show(i) {
+    const s = SESSIONS[i];
+    document.getElementById("dayName").textContent = i === todayIdx ? "Today, " + s.day : s.day;
+    document.getElementById("session").textContent = s.title;
+    document.getElementById("video").src = "https://drive.google.com/file/d/" + s.id + "/preview";
+    document.getElementById("driveLink").href = "https://drive.google.com/file/d/" + s.id + "/view";
+    Object.entries(buttons).forEach(([k, b]) => b.setAttribute("aria-pressed", String(Number(k) === i)));
+  }
+
+  show(todayIdx);
+</script>
+</body>
+</html>
