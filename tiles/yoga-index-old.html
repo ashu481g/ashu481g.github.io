@@ -232,9 +232,60 @@
   @media (prefers-reduced-motion: reduce) {
     .day { transition: none; }
   }
+  /* ── Rolling news-style ribbon ── */
+  .ribbon {
+    display: flex;
+    align-items: stretch;
+    background: var(--ink);
+    color: var(--bg);
+    overflow: hidden;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .ribbon-tag {
+    flex: none;
+    display: flex; align-items: center;
+    padding: 0.55rem 1rem;
+    background: var(--sun);
+    color: #1E2B3A;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    position: relative;
+    z-index: 1;
+  }
+  .ribbon-window { flex: 1; overflow: hidden; display: flex; align-items: center; }
+  .ribbon-track {
+    display: flex;
+    width: max-content;
+    animation: roll-ltr 40s linear infinite;
+  }
+  .ribbon-track span { white-space: nowrap; padding: 0.55rem 0; }
+  .ribbon-track span::after { content: "\2022"; margin: 0 2.5rem; color: var(--sun); }
+  .ribbon:hover .ribbon-track { animation-play-state: paused; }
+  /* Left → right: start shifted left by one half, slide to 0, repeat seamlessly */
+  @keyframes roll-ltr {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ribbon-track { animation: none; }
+  }
 </style>
 </head>
 <body>
+<div class="ribbon" role="region" aria-label="About this page">
+  <div class="ribbon-tag">Habuild</div>
+  <div class="ribbon-window">
+    <p class="sr-only">Habuild - An effort towards building your habit.</p>
+    <div class="ribbon-track" aria-hidden="true"><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span></div>
+  </div>
+</div>
 <main>
   <section class="extra" id="pdfSection" hidden>
     <h2>Books</h2>

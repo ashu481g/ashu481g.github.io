@@ -454,6 +454,7 @@ const PDFS = [
 
   function stopAudio() {
     audio.pause();
+    if (typeof audioNote !== "undefined") audioNote.hidden = true;
     panel.hidden = true;
     videoEl.hidden = false;
   }
@@ -496,21 +497,53 @@ const PDFS = [
     if (played < target) { audio.currentTime = 0; audio.play().catch(() => {}); }
     updateRound();
   });
+  // Try several sources in turn: a copy kept next to the page first (most reliable),
+  // then Google Drive's direct links. If none work, fall back to Drive's own player.
+  const audioNote = document.createElement("p");
+  audioNote.className = "fallback";
+  audioNote.hidden = true;
+  document.querySelector(".center .fallback").after(audioNote);
+
+  let sources = [], srcIdx = 0, currentItem = null;
+
+  function tryNextSource() {
+    if (srcIdx < sources.length) {
+      audio.src = sources[srcIdx++];
+      audio.load();
+      return;
+    }
+    // Every source failed → use Drive's preview player (plays once, repeats not possible there)
+    panel.hidden = true;
+    videoEl.hidden = false;
+    videoEl.src = "https://drive.google.com/file/d/" + currentItem.id + "/preview";
+    audioNote.hidden = false;
+    audioNote.textContent = "Repeat counting isn't available for this track from Google Drive. " +
+      "Upload it to the audio folder of your GitHub repo to enable 15 / 30 repeats.";
+  }
+
   audio.addEventListener("error", () => {
-    roundEl.textContent = "This track can't play here";
-    totalEl.textContent = "Use the Google Drive link below, or host the file with the page.";
+    if (!panel.hidden) tryNextSource();
   });
 
   function loadAudio(item, heading, subtitle) {
+    currentItem = item;
+    audioNote.hidden = true;
     videoEl.src = "about:blank";
     videoEl.hidden = true;
     panel.hidden = false;
     setHeading(heading, subtitle);
     document.getElementById("driveLink").href = "https://drive.google.com/file/d/" + item.id + "/view";
+    sources = [
+      item.src,
+      "audio/" + encodeURIComponent(item.name),
+      "https://drive.usercontent.google.com/download?id=" + item.id + "&export=download",
+      "https://drive.google.com/uc?export=download&id=" + item.id
+    ].filter(Boolean);
+    srcIdx = 0;
     audio.dataset.fresh = "1";
-    audio.src = item.src || ("https://drive.google.com/uc?export=download&id=" + item.id);
     setTarget(1);
     roundEl.textContent = "Loading…";
+    tryNextSource();
   }
 
   function show(i) {
