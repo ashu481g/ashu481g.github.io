@@ -70,8 +70,22 @@
     height: 100vh;
     height: 100dvh;
     padding: calc(5.5rem + env(safe-area-inset-top, 0px)) 1.5rem 2rem 1.5rem;
-    border-right: 1px solid var(--rule);
+    border-right: 1px solid transparent;
     overflow-y: auto;
+    /* Hidden at the top of the page; appears once the visitor scrolls down */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-1rem);
+    transition: opacity .35s ease, transform .35s ease, visibility .35s, border-color .35s;
+  }
+  body.nav-on .side {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    border-right-color: var(--rule);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .side, body.nav-on .side { transform: none; transition: opacity .2s, visibility .2s; }
   }
   .side .who { font: 600 1.15rem/1.25 var(--serif); margin: 0 0 .2rem; }
   .side .who-sub { color: var(--muted); font-size: .875rem; margin: 0 0 2rem; }
@@ -102,12 +116,16 @@
     .layout { grid-template-columns: minmax(0, 1fr); }
     .side, main { min-width: 0; }
     .side {
+      position: fixed;
+      top: 0; left: 0; right: 0;
       height: auto;
       z-index: 10;
+      transform: translateY(-100%);
       padding: env(safe-area-inset-top, 0px) 0 0;
       border-right: 0;
       border-bottom: 1px solid var(--rule);
       background: var(--paper);
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
       overflow: visible;
     }
     .side .who, .side .who-sub { display: none; }
@@ -648,6 +666,7 @@
         current = targets[targets.length - 1].id;
       }
       setActive(current);
+      document.body.classList.toggle('nav-on', window.scrollY > 80);
     };
     let ticking = false;
     window.addEventListener('scroll', () => {
