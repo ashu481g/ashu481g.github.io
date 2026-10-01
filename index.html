@@ -21,6 +21,7 @@
     --steel: #2F5D8A;
     --petrol: #2C7A72;
     --brass: #B98B26;
+    --slate: #8592A6;
     --serif: "Spectral", Georgia, "Times New Roman", serif;
     --sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
     box-sizing: border-box;
@@ -36,6 +37,7 @@
       --steel: #6D9CCB;
       --petrol: #5BB0A6;
       --brass: #D9AE4F;
+      --slate: #66748A;
     }
   }
   *, *::before, *::after { box-sizing: inherit; }
@@ -187,22 +189,25 @@
     margin-bottom: .9rem;
   }
   .band span { display: block; transform-origin: left; }
+  .seg-btech { flex: 46;  background: var(--slate); }
   .seg-bpcl  { flex: 194; background: var(--steel); }
   .seg-gap   { flex: 4;   background: var(--rule); }
   .seg-ngo   { flex: 38;  background: var(--petrol); }
   .seg-iiml  { flex: 22;  background: var(--brass); }
-  .band-labels { display: flex; gap: 0; font-size: .95rem; }
-  .band-labels div { min-width: 0; padding-right: .75rem; }
-  .band-labels .l-bpcl { flex: 194; }
-  .band-labels .l-gap  { flex: 4; padding: 0; }
-  .band-labels .l-ngo  { flex: 38; }
-  .band-labels .l-iiml { flex: 22; padding-right: 0; }
+  .band-labels { display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: 1rem 1.5rem; font-size: .95rem; }
+  .band-labels div { padding-left: .75rem; border-left: 4px solid; }
+  .band-labels .l-btech { border-color: var(--slate); }
+  .band-labels .l-bpcl  { border-color: var(--steel); }
+  .band-labels .l-ngo   { border-color: var(--petrol); }
+  .band-labels .l-iiml  { border-color: var(--brass); }
+  .band-labels .l-gap   { display: none; }
   .band-labels strong { display: block; font-weight: 600; }
   .band-labels small { color: var(--muted); font-size: .875rem; }
   .band-note { color: var(--muted); font-size: .95rem; margin-top: 1.5rem; max-width: 44em; }
 
   @media (prefers-reduced-motion: no-preference) {
     .band span { animation: grow .9s cubic-bezier(.2,.7,.2,1) both; }
+    .band .seg-bpcl { animation-delay: .25s; }
     .band .seg-gap  { animation-delay: .55s; }
     .band .seg-ngo  { animation-delay: .6s; }
     .band .seg-iiml { animation-delay: .8s; }
@@ -211,12 +216,6 @@
 
   @media (max-width: 640px) {
     .band { height: 2.25rem; }
-    .band-labels { flex-direction: column; gap: .6rem; }
-    .band-labels div { padding-left: .8rem; border-left: 4px solid; }
-    .band-labels .l-bpcl { border-color: var(--steel); }
-    .band-labels .l-ngo  { border-color: var(--petrol); }
-    .band-labels .l-iiml { border-color: var(--brass); }
-    .band-labels .l-gap  { display: none; }
   }
 
   /* Sections */
@@ -369,13 +368,14 @@
 <section class="career" aria-label="Career at a glance">
   <div class="wrap">
     <div class="band" aria-hidden="true">
-      <span class="seg-bpcl"></span><span class="seg-gap"></span><span class="seg-ngo"></span><span class="seg-iiml"></span>
+      <span class="seg-btech"></span><span class="seg-bpcl"></span><span class="seg-gap"></span><span class="seg-ngo"></span><span class="seg-iiml"></span>
     </div>
     <div class="band-labels">
-      <div class="l-bpcl"><strong>BPCL</strong></div>
+      <div class="l-btech"><strong>IIT (BHU)</strong><small>B.Tech, CSE, 2001–2005</small></div>
+      <div class="l-bpcl"><strong>BPCL</strong><small>Manager, Information Systems, 2005–2021</small></div>
       <div class="l-gap"></div>
-      <div class="l-ngo"><strong>Education NGO</strong></div>
-      <div class="l-iiml"><strong>IIM Lucknow</strong></div>
+      <div class="l-ngo"><strong>Education NGO</strong><small>Project Director, 2022–25</small></div>
+      <div class="l-iiml"><strong>IIM Lucknow</strong><small>MBA, 2025–present</small></div>
     </div>
     <p class="band-note">Each bar is drawn to scale. Most of my career has been spent inside large systems that move money, fuel and people. The MBA is about learning the business decisions those systems serve.</p>
   </div>
