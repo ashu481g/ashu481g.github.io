@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Schedule &amp; Availability</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <h2>📅 Calendar Hub</h2>
+
+  <div class="tab-nav" role="tablist">
+    <button class="tab-btn active" data-tab="public-tab" role="tab">🌐 Public Availability (7 Days)</button>
+    <button class="tab-btn" data-tab="private-tab" role="tab">🔒 Owner View</button>
+  </div>
+
+  <!-- Public: free/busy only -->
+  <div id="public-tab" class="tab-content active">
+    <p class="note">Live busy and free times for the coming week. Meeting details are not shared.</p>
+    <div class="legend"><span class="sw free"></span> Free <span class="sw busy"></span> Busy</div>
+    <div id="public-timeline">Loading availability...</div>
+  </div>
+
+  <!-- Owner only: full details after Google sign-in -->
+  <div id="private-tab" class="tab-content">
+    <div class="private-head">
+      <p>This view is for the calendar owner only.</p>
+      <button id="auth-btn" class="btn btn-primary">Sign in with Google</button>
+      <button id="signout-btn" class="btn btn-grey" hidden>Sign out</button>
+    </div>
+    <div id="private-status" class="status"></div>
+    <div id="private-schedule"></div>
+  </div>
+
+</body>
+</html>

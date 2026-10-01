@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IIM Lucknow Revision Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>IIM Lucknow Revision Portal</h1>
+  <p>Video-supported revision for the current 7 subjects. More subjects can be added through <b>data/subjects.json</b>.</p>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Search subject, module or overlap...">
+    <select id="filter"><option value="all">All subjects</option></select>
+    <button id="reset">Reset progress</button>
+  </div>
+</header>
+
+<main>
+  <section class="summary">
+    <div class="stat">Subjects<strong id="subjectCount">0</strong></div>
+    <div class="stat">Modules<strong id="moduleCount">0</strong></div>
+    <div class="stat">Completed modules<strong id="completedCount">0</strong></div>
+    <div class="stat">Overall completion<strong id="overallPct">0%</strong></div>
+  </section>
+
+  <section class="dashboard">
+    <div class="panel">
+      <h2>Revision Dashboard — Subject-wise Progress</h2>
+      <div id="subjectProgress"></div>
+    </div>
+    <div class="panel">
+      <h2>Revise Now Queue</h2>
+      <div id="reviseQueue"></div>
+    </div>
+  </section>
+
+  <section class="dashboard">
+    <div class="panel">
+      <h2>Pending Modules</h2>
+      <div id="pendingList"></div>
+    </div>
+    <div class="panel">
+      <h2>Recently Completed</h2>
+      <div id="recentList"></div>
+    </div>
+  </section>
+
+  <section class="panel panel-gap">
+    <h2>Cross-Subject Overlap Map</h2>
+    <p class="empty">Overlapping topics are intentionally retained in each subject. The tags show where the same or closely related concept appears elsewhere, so the portal does not silently merge subjects.</p>
+    <div id="overlapMap"></div>
+  </section>
+
+  <section id="grid" class="grid"></section>
+</main>
+
+<footer>
+  MVP: static HTML + JSON + browser localStorage. Professor material remains the primary syllabus; external videos are revision aids and are not treated as evidence that a topic was taught.
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
