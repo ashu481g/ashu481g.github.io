@@ -180,19 +180,6 @@
     .work li { grid-template-columns: 1fr; }
   }
 
-
-  /* Everyday tools */
-  .tools {
-    list-style: none; margin: 0; padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-    gap: 2rem 2.5rem;
-  }
-  .tools li { border-top: 3px solid var(--petrol); padding-top: 1rem; }
-  .tools h3 { font: 600 1.1rem/1.3 var(--serif); margin: 0 0 .35rem; }
-  .tools p { margin: 0 0 .5rem; color: var(--muted); font-size: .95rem; }
-  .tools .open { font-weight: 500; font-size: .95rem; }
-
   /* Experience */
   .roles { display: grid; gap: 2rem; }
   .role { display: grid; grid-template-columns: 9rem 1fr; gap: 1.5rem; }
@@ -290,29 +277,15 @@
           <ul class="stack"><li>HTML, CSS, JavaScript</li><li>GitHub Pages</li><li>Supabase</li></ul>
         </div>
       </li>
-    </ul>
-  </div>
-</section>
-
-<section class="block" id="tools">
-  <div class="wrap">
-    <h2>Tools I made for everyday use</h2>
-    <p class="intro">When something in my routine is tedious, I write a small app for it. These are live and in daily use at home and on campus.</p>
-    <ul class="tools">
       <li>
-        <h3>Exam revision portal</h3>
-        <p>One place for my end-term revision material, organised by course.</p>
-        <a class="open" href="revision_portal/index.html">Open the portal</a>
-      </li>
-      <li>
-        <h3>Math practice for kids</h3>
-        <p>An arithmetic practice app I built for a young learner at home.</p>
-        <a class="open" href="math-practice/index.html">Try a practice round</a>
-      </li>
-      <li>
-        <h3>Daily yoga class player</h3>
-        <p>Plays the right Habuild class video for each weekday from Google Drive, so home practice starts with one tap.</p>
-        <a class="open" href="tiles/yoga-index.html">Open the player</a>
+        <div>
+          <h3><a href="revision_portal/index.html">Revision portal</a></h3>
+          <p class="ctx">Personal project, 2026</p>
+        </div>
+        <div>
+          <p class="desc">A study site I made to revise for end-term exams.</p>
+          <ul class="stack"><li>HTML, CSS, JavaScript</li><li>GitHub Pages</li></ul>
+        </div>
       </li>
     </ul>
   </div>
