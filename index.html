@@ -53,6 +53,82 @@
 
   .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem; }
 
+
+  /* ===== Two-part layout: sticky section menu + main content ===== */
+  .layout {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    max-width: 84rem;
+    margin: 0 auto;
+  }
+  .side {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    height: 100dvh;
+    padding: calc(5.5rem + env(safe-area-inset-top, 0px)) 1.5rem 2rem 1.5rem;
+    border-right: 1px solid var(--rule);
+    overflow-y: auto;
+  }
+  .side .who { font: 600 1.15rem/1.25 var(--serif); margin: 0 0 .2rem; }
+  .side .who-sub { color: var(--muted); font-size: .875rem; margin: 0 0 2rem; }
+  .side ol { list-style: none; margin: 0; padding: 0; display: grid; gap: .15rem; }
+  .side a {
+    display: block;
+    padding: .45rem .75rem;
+    border-left: 3px solid transparent;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .95rem;
+    border-radius: 0 3px 3px 0;
+  }
+  .side a:hover { color: var(--ink); background: color-mix(in srgb, var(--rule) 45%, transparent); }
+  .side a[aria-current="true"] {
+    color: var(--ink);
+    font-weight: 600;
+    border-left-color: var(--brass);
+    background: color-mix(in srgb, var(--rule) 45%, transparent);
+  }
+  main .wrap { max-width: 62rem; margin: 0; padding: 0 2.5rem; }
+  main > section, main > header, main > footer { scroll-margin-top: 1rem; }
+
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  /* Phones and small tablets: the menu becomes a sticky strip across the top */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .side, main { min-width: 0; }
+    .side {
+      height: auto;
+      z-index: 10;
+      padding: env(safe-area-inset-top, 0px) 0 0;
+      border-right: 0;
+      border-bottom: 1px solid var(--rule);
+      background: var(--paper);
+      overflow: visible;
+    }
+    .side .who, .side .who-sub { display: none; }
+    .side ol {
+      display: flex;
+      gap: .25rem;
+      overflow-x: auto;
+      padding: .5rem 1rem;
+      scrollbar-width: none;
+    }
+    .side ol::-webkit-scrollbar { display: none; }
+    .side a {
+      white-space: nowrap;
+      border-left: 0;
+      border-bottom: 3px solid transparent;
+      border-radius: 3px 3px 0 0;
+      padding: .4rem .7rem;
+    }
+    .side a[aria-current="true"] { border-bottom-color: var(--brass); }
+    main .wrap { padding: 0 1.5rem; }
+    main > section, main > header, main > footer { scroll-margin-top: 3.75rem; }
+  }
+
   /* Hero */
   header.hero { padding: 5.5rem 0 3rem; }
   .hero h1 {
@@ -210,7 +286,23 @@
 </head>
 <body>
 
-<header class="hero">
+<div class="layout">
+
+<nav class="side" aria-label="Sections">
+  <p class="who">Kumar Ashwini</p>
+  <p class="who-sub">Finance and technology</p>
+  <ol>
+    <li><a href="#about">About</a></li>
+    <li><a href="#built">Things I've built</a></li>
+    <li><a href="#tools">Everyday tools</a></li>
+    <li><a href="#analysis">Research and analysis</a></li>
+    <li><a href="#experience">Experience and education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero" id="about">
   <div class="wrap hero-grid">
     <!-- Passport photo: keep it at img/kapp.jpg in the repo root -->
     <img class="portrait" src="img/kapp.jpg" alt="Portrait of Kumar Ashwini" width="168" height="216" onerror="this.remove()">
@@ -423,6 +515,9 @@
   </div>
 </footer>
 
+</main>
+</div>
+
 <script>
   /* ===== Edit your two email addresses here (only place you need to change) ===== */
   const EMAILS = {
@@ -435,6 +530,37 @@
     a.href = "mailto:" + addr;
     if (a.hasAttribute("data-show")) a.textContent = addr;
   });
+
+  /* Highlight the menu item for the section currently on screen */
+  (function () {
+    const links = [...document.querySelectorAll('.side a[href^="#"]')];
+    const byId = Object.fromEntries(links.map(a => [a.getAttribute('href').slice(1), a]));
+    const targets = Object.keys(byId).map(id => document.getElementById(id)).filter(Boolean);
+    const setActive = id => links.forEach(a => {
+      const on = a === byId[id];
+      a.setAttribute('aria-current', on ? 'true' : 'false');
+      if (on && window.matchMedia('(max-width: 900px)').matches) {
+        a.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+    });
+    const update = () => {
+      // Last section whose top has passed 35% of the screen height
+      const line = window.innerHeight * 0.35;
+      let current = targets[0].id;
+      for (const t of targets) if (t.getBoundingClientRect().top <= line) current = t.id;
+      // At the very bottom, the last section is the active one
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        current = targets[targets.length - 1].id;
+      }
+      setActive(current);
+    };
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(() => { update(); ticking = false; }); ticking = true; }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
 </script>
 </body>
 </html>
