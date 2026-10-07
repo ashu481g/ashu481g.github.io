@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Driving Test Quiz - 20 Random Questions</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <h1>Driving Test Quiz</h1>
+  <p class="subtitle">20 random questions pulled from a 405-question bank each round.</p>
+
+  <div class="card" id="card">
+
+    <div id="startScreen" class="start-screen">
+      <p>Ready to test yourself? Each round picks 20 random questions with shuffled answer order.</p>
+      <button class="primary" id="startBtn">Start Quiz</button>
+    </div>
+
+    <div id="quizScreen" class="hidden">
+      <div class="progress-row">
+        <span id="progressText">Question 1 of 20</span>
+        <span id="scoreText">Score: 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="qtext" id="qtext"></div>
+      <img id="qimg" class="qimg hidden" alt="question sign">
+      <div class="options" id="options"></div>
+      <div class="actions">
+        <button class="primary" id="nextBtn" disabled>Next</button>
+      </div>
+    </div>
+
+    <div id="resultScreen" class="hidden result-screen">
+      <div class="score-label">You scored</div>
+      <div class="score-big" id="finalScore">0 / 20</div>
+      <div class="score-label" id="finalPct"></div>
+      <button class="primary" id="restartBtn">Try 20 more</button>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

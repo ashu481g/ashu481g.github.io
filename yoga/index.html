@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Today's Yoga</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧘</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="ribbon" role="region" aria-label="About this page">
+  <div class="ribbon-tag">Habuild</div>
+  <div class="ribbon-window">
+    <p class="sr-only">Habuild - An effort towards building your habit.</p>
+    <div class="ribbon-track" aria-hidden="true"><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span><span>Habuild - An effort towards building your habit.</span></div>
+  </div>
+</div>
+<main>
+  <section class="extra" id="pdfSection" hidden>
+    <h2>Books</h2>
+    <p class="hint">Each book opens in a new tab.</p>
+    <ul class="list" id="pdfList"></ul>
+  </section>
+
+  <div class="center">
+    <header>
+      <p class="date" id="date"></p>
+      <h1 id="dayName">Loading…</h1>
+      <p class="session" id="session"></p>
+    </header>
+
+    <div class="player">
+      <iframe id="video" title="Yoga session video" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="audio-panel" id="audioPanel" hidden>
+        <p class="round" id="round">Ready</p>
+        <div class="repeat" role="group" aria-label="How many times to play">
+          <span class="repeat-label">Repeat</span>
+          <button type="button" class="rep" data-n="1">Once</button>
+          <button type="button" class="rep" data-n="15">15 times</button>
+          <button type="button" class="rep" data-n="30">30 times</button>
+        </div>
+        <p class="total" id="total"></p>
+        <audio id="audio" controls preload="metadata"></audio>
+      </div>
+    </div>
+    <p class="fallback">Not loading? <a id="driveLink" href="#" target="_blank" rel="noopener">Open it in Google Drive</a></p>
+
+    <nav class="week" id="week" aria-label="Choose a day"></nav>
+    <p class="legend"><span></span> Today</p>
+  </div>
+
+  <section class="extra" id="breathingSection" hidden>
+    <h2>Breathing &amp; Pranayam</h2>
+    <p class="hint">Pick a session to play it in the main player.</p>
+    <ul class="list" id="breathingList"></ul>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

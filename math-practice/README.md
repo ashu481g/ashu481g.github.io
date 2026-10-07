@@ -2,25 +2,25 @@
 
 Static HTML/CSS/Vanilla JS mathematics practice application.
 
+## Files
+- `index.html` — page markup
+- `style.css` — styles
+- `app.js` — all app logic (questions, scoring, comics, daily car)
+- `data/config.json` — digit and question-count options
+
 ## Run locally
 Because `data/config.json` is loaded when available, use a small static HTTP server for the full configuration path.
 
 Python:
 `python -m http.server 8080`
 
-Then open:
-`http://localhost:8080/`
+Run it from the repository root, then open:
+`http://localhost:8080/math-practice/`
 
 The app also has built-in JavaScript defaults, so the core application does not depend on the JSON file being available.
 
 ## GitHub Pages
-1. Create a repository.
-2. Copy the contents of this folder into the repository root.
-3. Ensure `index.html` is directly in the repository root.
-4. In GitHub: Settings → Pages.
-5. Select GitHub Actions or Deploy from a branch, depending on repository setup.
-6. Publish the root of the selected branch.
-7. Open the generated GitHub Pages URL.
+This app is published as part of the main site at `/math-practice/`. See the README in the repository root.
 
 ## Version 1 features
 - Addition, subtraction, multiplication and division.

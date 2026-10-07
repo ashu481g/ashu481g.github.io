@@ -1,0 +1,291 @@
+[
+  {
+    "id": "fra",
+    "code": "FRA",
+    "name": "Financial Reporting & Analysis",
+    "modules": [
+      "Financial Reporting Foundations",
+      "Accounting Concepts & Accrual",
+      "Transaction Processing",
+      "Revenue Recognition",
+      "Inventory",
+      "Long-Lived Assets",
+      "Cash Flow Statement",
+      "Financial Statement & Ratio Analysis",
+      "Zomato Application"
+    ],
+    "videos": [
+      {
+        "title": "CFA Level I \u2013 Financial Statement Analysis",
+        "provider": "AnalystPrep / YouTube",
+        "url": "https://www.youtube.com/watch?v=rtQob6hl-TM",
+        "type": "Primary revision video",
+        "note": "Use as a compact FSA refresher; covers the analysis framework and information sources."
+      },
+      {
+        "title": "Financial Statement Analysis \u2013 full free course",
+        "provider": "AnalystPrep via YouTube",
+        "url": "https://www.classcentral.com/course/youtube-cfa-level-1-financial-statements-analysis-514685",
+        "type": "Supplementary course",
+        "note": "Use selectively for income statement and cash-flow analysis."
+      }
+    ],
+    "overlaps": [
+      "CVR \u2013 financial statement analysis and valuation inputs",
+      "Corp Fin \u2013 financial analysis inputs"
+    ]
+  },
+  {
+    "id": "manac",
+    "code": "MANAC",
+    "name": "Management Accounting",
+    "modules": [
+      "Foundations",
+      "Cost Concepts & Classification",
+      "Cost Capture",
+      "Direct Costs & Cost Flow",
+      "Indirect Costs & Allocation",
+      "Activity-Based Costing",
+      "Budgeting & Forecasting",
+      "Flexible Budgeting",
+      "CVP Analysis",
+      "Cost Behaviour",
+      "Variable vs Absorption Costing",
+      "Decision-Making & Relevant Costing",
+      "Standard Costing & Variance Analysis",
+      "Pricing / Target / Marginal Costing"
+    ],
+    "videos": [
+      {
+        "title": "Management Accounting \u2013 NPTEL",
+        "provider": "IIT Roorkee via YouTube",
+        "url": "https://www.classcentral.com/course/youtube-management-accounting-47476",
+        "type": "Primary revision course",
+        "note": "Long course; use topic-by-topic rather than watching sequentially."
+      },
+      {
+        "title": "Management Accounting \u2013 SWAYAM/NPTEL course page",
+        "provider": "IIT Roorkee",
+        "url": "https://onlinecourses.nptel.ac.in/e-learning/preview/noc22_mg65",
+        "type": "Course reference",
+        "note": "Useful for the course outline and module mapping."
+      }
+    ],
+    "overlaps": [
+      "FRA \u2013 accounting foundations and financial information",
+      "Corp Fin \u2013 budgeting/financial decision inputs"
+    ]
+  },
+  {
+    "id": "corpfin",
+    "code": "CORP FIN",
+    "name": "Corporate Finance",
+    "modules": [
+      "Financial Management Foundations",
+      "Time Value of Money",
+      "Risk, Return & Portfolio Theory",
+      "Bond & Equity Valuation",
+      "Cost of Capital & WACC",
+      "Capital Budgeting",
+      "Investment Risk",
+      "Market Efficiency & Financing",
+      "Capital Structure & Leverage",
+      "Dividend Policy",
+      "Lease Financing",
+      "Working Capital",
+      "Risk Management & Derivatives"
+    ],
+    "videos": [
+      {
+        "title": "Corporate Finance \u2013 full MBA course",
+        "provider": "Aswath Damodaran / NYU Stern",
+        "url": "https://www.youtube.com/channel/UCLvnJL8htRR1T9cbSccaoVw",
+        "type": "Primary revision hub",
+        "note": "Use the Corporate Finance playlist selectively by topic."
+      },
+      {
+        "title": "Valuation in Four Lessons",
+        "provider": "Aswath Damodaran / Talks at Google",
+        "url": "https://www.youtube.com/watch?v=Z5chrxMuBoo",
+        "type": "Quick refresher",
+        "note": "Useful bridge between corporate finance concepts and valuation."
+      }
+    ],
+    "overlaps": [
+      "FDRM \u2013 derivatives/risk management",
+      "CVR \u2013 WACC, DCF and valuation",
+      "M&A \u2013 financing and transaction valuation"
+    ]
+  },
+  {
+    "id": "fdrm",
+    "code": "FDRM",
+    "name": "Financial Derivatives & Risk Management",
+    "modules": [
+      "Derivatives & Risk Foundations",
+      "Forwards & Futures",
+      "Hedging with Forwards/Futures",
+      "Bond Valuation, Curves & Bond Risk",
+      "Interest-Rate / Treasury Futures",
+      "Swaps",
+      "Options Fundamentals",
+      "Options Pricing & Strategies",
+      "Risk Management Applications"
+    ],
+    "videos": [
+      {
+        "title": "Financial Derivatives and Risk Management",
+        "provider": "IIT Roorkee",
+        "url": "https://www.youtube.com/watch?v=5EYjZMYSzBc",
+        "type": "Primary video",
+        "note": "Use for derivatives foundations and pricing/risk-management concepts."
+      },
+      {
+        "title": "Financial Derivatives and Risk Management \u2013 full free course",
+        "provider": "NPTEL / IIT Roorkee via YouTube",
+        "url": "https://www.classcentral.com/course/youtube-financial-derivatives-and-risk-management-47470",
+        "type": "Supplementary course",
+        "note": "Useful for deeper numerical practice and pricing/hedging coverage."
+      }
+    ],
+    "overlaps": [
+      "Corp Fin \u2013 risk management and derivatives",
+      "HFS \u2013 fixed-income/convertible arbitrage",
+      "M&A \u2013 deal-structuring options such as caps/collars"
+    ]
+  },
+  {
+    "id": "hfs",
+    "code": "HFS",
+    "name": "Hedge Fund Strategies",
+    "modules": [
+      "Hedge Fund Ecosystem, Structure & Economics",
+      "Portfolio Theory, CAPM & Alpha",
+      "Market Efficiency, Risk Premia & Behavioural Finance",
+      "Value & Growth Investing",
+      "Long/Short Equity",
+      "Arbitrage",
+      "Fixed Income Arbitrage",
+      "Convertible & Capital-Structure Arbitrage",
+      "Event-Driven / Merger Arbitrage",
+      "Global Macro / CTA",
+      "Hedge Fund Risk, Performance & Hidden Risks"
+    ],
+    "videos": [
+      {
+        "title": "Hedge Fund Strategies \u2013 CFA Level 1 one-shot",
+        "provider": "CFA by PW / YouTube",
+        "url": "https://www.youtube.com/watch?v=jw5wOLsV4Zc",
+        "type": "Primary revision video",
+        "note": "Compact coverage including long/short, event-driven, convertible/fixed-income arbitrage, global macro and performance."
+      },
+      {
+        "title": "Hedge Fund Strategies \u2013 Part I",
+        "provider": "AnalystPrep via YouTube",
+        "url": "https://www.classcentral.com/course/youtube-hedge-fund-strategies-part-i-2024-level-ii-cfa-alternative-investments-learning-module-4-393930",
+        "type": "Supplementary",
+        "note": "Useful for equity-related, event-driven and relative-value strategy review."
+      },
+      {
+        "title": "Hedge Fund Strategies \u2013 CFA Institute refresher",
+        "provider": "CFA Institute",
+        "url": "https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/hedge-fund-strategies",
+        "type": "Reference",
+        "note": "Use to cross-check strategy classification and implementation terminology."
+      }
+    ],
+    "overlaps": [
+      "FDRM \u2013 fixed-income and convertible arbitrage",
+      "M&A \u2013 merger arbitrage",
+      "CVR \u2013 valuation and LBO-related concepts"
+    ]
+  },
+  {
+    "id": "cvr",
+    "code": "CVR",
+    "name": "Corporate Valuation & Restructuring",
+    "modules": [
+      "Financial Statement Analysis for Valuation",
+      "FCFF / FCFE",
+      "Cost of Capital & DCF",
+      "Relative Valuation",
+      "Valuation of Banks",
+      "Valuation of Early-Stage Companies",
+      "Country Risk",
+      "Real Options",
+      "Value Drivers & Value Creation",
+      "Restructuring",
+      "M&A / Synergy / LBO / Integration"
+    ],
+    "videos": [
+      {
+        "title": "Valuation \u2013 full MBA course",
+        "provider": "Aswath Damodaran / NYU Stern",
+        "url": "https://www.youtube.com/channel/UCLvnJL8htRR1T9cbSccaoVw",
+        "type": "Primary revision hub",
+        "note": "Use the Valuation playlist selectively for DCF, relative valuation and special situations."
+      },
+      {
+        "title": "Valuation in Four Lessons",
+        "provider": "Aswath Damodaran / Talks at Google",
+        "url": "https://www.youtube.com/watch?v=Z5chrxMuBoo",
+        "type": "Quick refresher",
+        "note": "Good first-pass refresher before detailed valuation topics."
+      }
+    ],
+    "overlaps": [
+      "Corp Fin \u2013 WACC, DCF and capital budgeting",
+      "FRA \u2013 financial statement analysis",
+      "M&A \u2013 acquisition valuation and synergy",
+      "HFS \u2013 LBO and transaction strategies"
+    ]
+  },
+  {
+    "id": "ma",
+    "code": "M&A",
+    "name": "Mergers & Acquisitions",
+    "modules": [
+      "M&A Foundations & Rationale",
+      "M&A Process & Participants",
+      "Target Search & Screening",
+      "Valuation, Premium & Synergy",
+      "Deal Structuring",
+      "Financing the Transaction",
+      "Due Diligence",
+      "Legal Aspects & Deal Documentation",
+      "Cross-Border M&A",
+      "Post-Merger Integration",
+      "Takeover / Defensive Strategies",
+      "Post-Merger Evaluation"
+    ],
+    "videos": [
+      {
+        "title": "Mergers and Acquisition \u2013 IIM Bangalore / SWAYAM",
+        "provider": "IIM Bangalore via SWAYAM",
+        "url": "https://www.classcentral.com/course/swayam-mergers-and-acquisition-468212",
+        "type": "Primary structured course",
+        "note": "Use as the main structured external course; selectively map lessons to your professor PPT topics."
+      },
+      {
+        "title": "Introduction to Mergers and Acquisitions",
+        "provider": "MBA course / YouTube",
+        "url": "https://www.youtube.com/watch?v=BJdbFlyq5BE",
+        "type": "Quick refresher",
+        "note": "Covers M&A lifecycle, drivers, valuation, due diligence, structuring, financing and PMI."
+      },
+      {
+        "title": "M&Apedia",
+        "provider": "Free M&A reference",
+        "url": "https://mnapedia.com/",
+        "type": "Web reference",
+        "note": "Use for quick definitions and deal-structure terminology."
+      }
+    ],
+    "overlaps": [
+      "CVR \u2013 acquisition valuation, synergy, LBO and restructuring",
+      "FDRM \u2013 options/collars in deal structuring",
+      "HFS \u2013 merger arbitrage",
+      "FRA \u2013 financial statement analysis during due diligence"
+    ]
+  }
+]
