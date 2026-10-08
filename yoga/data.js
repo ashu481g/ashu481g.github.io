@@ -18,6 +18,11 @@ const SESSIONS = [
    with exactly the same file name. */
 const BREATHING = [
  {
+  "name": "Concentration Booster.mp4",
+  "id": "1ES6GaAW54ZaLrugfhr7pFQ5iVT78KheD",
+  "kind": "video"
+ },
+ {
   "name": "4-7-8-breathing-timer-breathingmeditation.mp3",
   "id": "1Z6D8uPrlynrv3KkbORqWp8IY5k6lCeJC",
   "kind": "audio"
