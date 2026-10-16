@@ -9,6 +9,15 @@
   else img.addEventListener("error", drop);
 })();
 
+/* Show the "Download CV" button only once assets/cv/Kumar_Ashwini_CV.pdf is uploaded */
+(function () {
+  const cv = document.querySelector(".btn.cv");
+  if (!cv) return;
+  fetch(cv.getAttribute("href"), { method: "HEAD" })
+    .then(r => { if (r.ok) cv.hidden = false; })
+    .catch(() => {});
+})();
+
 /* ===== Contact details: edit here only. Kept in script (not in the page text)
    so they are not shown until a visitor clicks, and are harder for bots to scrape. ===== */
 const CONTACT = {

@@ -8,6 +8,11 @@
 <meta property="og:title" content="Kumar Ashwini">
 <meta property="og:description" content="Enterprise IT veteran and IIM Lucknow MBA, working where finance meets software.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://ashu481g.github.io/">
+<meta property="og:image" content="https://ashu481g.github.io/assets/img/kapp.jpg">
+<meta property="og:image:alt" content="Portrait of Kumar Ashwini">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://ashu481g.github.io/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,10 +45,12 @@
     <div>
     <h1>Kumar Ashwini</h1>
     <p class="skills">Financial modelling, machine learning and full-stack web development</p>
-    <p class="lede">Sixteen years running enterprise IT at Bharat Petroleum, three years leading an education non-profit, and now an MBA candidate at IIM Lucknow.</p>
+    <p class="lede">Sixteen years running enterprise IT at Bharat Petroleum, three years as project director at a non-profit, and now an MBA candidate at IIM Lucknow.</p>
     <p class="seeking">I'm looking for roles in fintech, consulting and IT strategy, where a business problem needs both sound financial judgement and a system that actually works.</p>
     <div class="actions">
       <a class="btn primary" href="#contact">Contact me</a>
+      <!-- Shown only once assets/cv/Kumar_Ashwini_CV.pdf exists -->
+      <a class="btn cv" href="assets/cv/Kumar_Ashwini_CV.pdf" download hidden>Download CV</a>
       <a class="btn" href="https://github.com/ashu481g" target="_blank" rel="noopener">View my GitHub</a>
     </div>
     </div>
@@ -59,7 +66,7 @@
       <div class="l-btech"><strong>IIT (BHU)</strong><small>B.Tech, CSE, 2001–2005</small></div>
       <div class="l-bpcl"><strong>BPCL</strong><small>Manager, Information Systems, 2005–2021</small></div>
       <div class="l-gap"></div>
-      <div class="l-ngo"><strong>Education NGO</strong><small>Project Director, 2022–25</small></div>
+      <div class="l-ngo"><strong>Non-profit</strong><small>Project Director, 2022–25</small></div>
       <div class="l-iiml"><strong>IIM Lucknow</strong><small>MBA, 2025–present</small></div>
     </div>
     <p class="band-note">Each bar is drawn to scale. Most of my career has been spent inside large systems that move money, fuel and people. The MBA is about learning the business decisions those systems serve.</p>
@@ -112,7 +119,7 @@
         <div>
           <p class="desc">Attendance management for a whole campus, with separate roles for admins, professors and students. Sign-in is limited to the college domain.</p>
           <ul class="stack"><li>FastAPI</li><li>Supabase Postgres</li><li>Supabase Auth</li><li>Vercel</li></ul>
-          <span class="status wip">In progress</span>
+          <span class="status wip">In progress</span> · <a class="src" href="https://github.com/ashu481g/campus_platform" target="_blank" rel="noopener">Source code</a>
         </div>
       </li>
       <li>
@@ -132,47 +139,46 @@
 <section class="block" id="tools">
   <div class="wrap">
     <h2>Tools I made for everyday use</h2>
-    <p class="intro">When something in my routine is tedious, I write a small app for it. These are live and in daily use at home and on campus.</p>
+    <p class="intro">When something in my routine is tedious, I write a small app for it. These are live and in daily use on campus and at home.</p>
+    <h3 class="tools-group">For study and work</h3>
     <ul class="tools">
       <li>
-        <h3>Exam revision portal</h3>
-        <p>One place for my end-term revision material, organised by course.</p>
-        <a class="open" href="revision-portal/" target="_blank" rel="noopener">Open the portal</a>
-      </li>
-      <li>
-        <h3>Math practice for kids</h3>
-        <p>An arithmetic practice app I built for a young learner at home.</p>
-        <a class="open" href="math-practice/" target="_blank" rel="noopener">Try a practice round</a>
-      </li>
-      <li>
-        <h3>Daily yoga class player</h3>
-        <p>Plays the right Habuild class video for each weekday from Google Drive, so home practice starts with one tap.</p>
-        <a class="open" href="yoga/" target="_blank" rel="noopener">Open the player</a>
-      </li>
-      <li>
-        <h3>Calendar hub</h3>
-        <p>Shows my free and busy times for the next seven days from Google Calendar, with meeting details hidden. After Google sign-in, I see the full schedule.</p>
-        <a class="open" href="calendar/" target="_blank" rel="noopener">See my availability</a>
-      </li>
-      <li>
-        <h3>Driving test quiz</h3>
-        <p>Practice for the driving licence test: each round draws 20 random questions from a 405-question bank, with answer order shuffled and instant right-or-wrong feedback.</p>
-        <a class="open" href="driving-quiz/" target="_blank" rel="noopener">Take a quiz</a>
-      </li>
-      <li>
-        <h3>Toolbox</h3>
-        <p>Turns a batch of images into a single PDF. It's the start of one web page for my older Python utility scripts for PDFs, OCR and speech.</p>
-        <a class="open" href="https://toolbox-samurai6.vercel.app/" target="_blank" rel="noopener">Open the toolbox</a>
-      </li>
-      <li>
-        <h3>Lecture Notes Studio</h3>
+        <h4>Lecture Notes Studio</h4>
         <p>Turns a lecture recording or transcript into cleaned-up audio, illustrated class notes and a PPT-style video lecture for revision.</p>
         <a class="open" href="https://class-notes-alpha.vercel.app/" target="_blank" rel="noopener">Open the studio</a>
       </li>
       <li>
-        <h3>Session Recorder</h3>
+        <h4>Session Recorder</h4>
         <p>Records my screen, a window or a browser tab in the browser, with system and microphone audio, and saves the video straight to my computer. No sign-up and no software to install.</p>
         <a class="open" href="https://session-recorder.session-recorder.workers.dev/" target="_blank" rel="noopener">Open the recorder</a>
+      </li>
+      <li>
+        <h4>Toolbox</h4>
+        <p>Turns a batch of images into a single PDF. It's the start of one web page for my older Python utility scripts for PDFs, OCR and speech.</p>
+        <a class="open" href="https://toolbox-samurai6.vercel.app/" target="_blank" rel="noopener">Open the toolbox</a>
+      </li>
+      <li>
+        <h4>Exam revision portal</h4>
+        <p>One place for my end-term revision material, organised by course.</p>
+        <a class="open" href="revision-portal/">Open the portal</a>
+      </li>
+    </ul>
+    <h3 class="tools-group">At home</h3>
+    <ul class="tools home">
+      <li>
+        <h4>Math practice for kids</h4>
+        <p>An arithmetic practice app I built for a young learner at home.</p>
+        <a class="open" href="math-practice/">Try a practice round</a>
+      </li>
+      <li>
+        <h4>Daily yoga class player</h4>
+        <p>Plays the right Habuild class video for each weekday from Google Drive, so home practice starts with one tap.</p>
+        <a class="open" href="yoga/">Open the player</a>
+      </li>
+      <li>
+        <h4>Driving test quiz</h4>
+        <p>Practice for the driving licence test: each round draws 20 random questions from a 405-question bank, with answer order shuffled and instant right-or-wrong feedback.</p>
+        <a class="open" href="driving-quiz/">Take a quiz</a>
       </li>
     </ul>
   </div>
@@ -181,7 +187,7 @@
 <section class="block" id="analysis">
   <div class="wrap">
     <h2>Research and analysis</h2>
-    <p class="intro">Quantitative models and strategy work from my internship and MBA coursework.</p>
+    <p class="intro">Quantitative models and strategy work from my internship, live projects and MBA coursework.</p>
     <ul class="work">
       <li>
         <div>
@@ -189,8 +195,28 @@
           <p class="ctx">Summer internship, Quantropy Research and Solution LLP, 2026</p>
         </div>
         <div>
-          <p class="desc">Built a pipeline that scrapes annual reports of 165 listed and delisted Indian companies from BSE and NSE, extracts the Management Discussion and Analysis section, and trains embedding, CNN and BiLSTM classifiers to flag financial distress. Much of the work went into keeping the evaluation honest: company-level splits to prevent leakage, focal loss for class imbalance, and calibrated decision thresholds.</p>
+          <p class="desc">Built a pipeline that scrapes annual reports of about 167 listed and delisted Indian companies from BSE and NSE, extracts the Management Discussion and Analysis section, and trains embedding, CNN and BiLSTM classifiers to flag financial distress. The distress label came from compulsory delistings (67 distressed against 100 healthy firms). Much of the work went into keeping the evaluation honest: company-level splits to prevent leakage, focal loss for class imbalance, and calibrated decision thresholds. The result is an inference engine that scores any new annual report's distress probability in seconds.</p>
           <ul class="stack"><li>Python</li><li>PyMuPDF</li><li>Deep learning</li><li>NLP</li></ul>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>JPMorgan investment banking benchmark</h3>
+          <p class="ctx">Live project, Koed</p>
+        </div>
+        <div>
+          <p class="desc">Benchmarked JPMorgan's investment banking franchise (M&amp;A, ECM and DCM) against Goldman Sachs and Morgan Stanley. Built a five-year Excel model of revenue, profit and fee mix, and gave a SWOT-based Buy, Hold or Sell call.</p>
+          <ul class="stack"><li>Equity research</li><li>Financial modelling</li><li>Excel</li></ul>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>NSE equity portfolio</h3>
+          <p class="ctx">Live project, Koed</p>
+        </div>
+        <div>
+          <p class="desc">Built a ₹1 lakh, 10-stock, five-sector NSE portfolio and measured its CAGR, standard deviation, beta and risk-return profile. It beat the Nifty 50 by 5.67 percentage points a year on a risk-adjusted basis, and the analysis quantified the benefit of diversification.</p>
+          <ul class="stack"><li>Portfolio construction</li><li>Risk metrics</li><li>Benchmarking</li></ul>
         </div>
       </li>
       <li>
@@ -247,7 +273,7 @@
         <div>
           <h3>MBA (PGP)</h3>
           <p class="org">Indian Institute of Management Lucknow</p>
-          <p>Coursework in finance, risk, quantitative methods and strategy. Summer internship in 2026 at Quantropy Research and Solution LLP on machine learning for credit risk.</p>
+          <p>Coursework in finance, risk, quantitative methods and strategy. Summer internship in 2026 at Quantropy Research and Solution LLP on machine learning for credit risk. CAT 2024: 98.52 percentile in Quant.</p>
         </div>
       </div>
       <div class="role">
@@ -255,7 +281,11 @@
         <div>
           <h3>Project Director</h3>
           <p class="org">Subhash Educational Society</p>
-          <p>Led a non-profit's programmes to educate underprivileged children.</p>
+          <ul class="wins">
+            <li>Led cross-functional execution of the Jal Jeevan Mission across 20 districts, reaching over 1 million beneficiaries.</li>
+            <li>Automated the society's IT processes, raising efficiency by 50% and data accuracy by 30%.</li>
+            <li>Grew grassroots engagement by 20% through community workshops.</li>
+          </ul>
         </div>
       </div>
       <div class="role">
@@ -263,7 +293,15 @@
         <div>
           <h3>Manager, Information Systems</h3>
           <p class="org">Bharat Petroleum Corporation Ltd, Mumbai</p>
-          <p>Sixteen years across IT applications, support and projects at one of India's largest oil companies.</p>
+          <p>Sixteen years at one of India's largest oil companies, handling ₹200+ crore of IT projects across refinery, marketing and LPG operations.</p>
+          <ul class="wins">
+            <li>Cut yearly operating cost by ₹15+ crore by proposing and rolling out IP telephony across all locations, which won an award at INTEROP.</li>
+            <li>Established SAP readiness and inter-organisational connectivity for a ₹9,000+ crore refinery project.</li>
+            <li>Ran ₹20+ crore of full-cycle procurement for four major projects, on time and within budget.</li>
+            <li>Built real-time KPI dashboards and 200+ refinery performance reports, raising operations planning efficiency by 20%.</li>
+            <li>Kept application and infrastructure stable for 8+ crore LPG consumers, leading BPCL and Microsoft teams.</li>
+            <li>Built refinery machine-learning models for pumps, heat exchangers and flare from existing plant data.</li>
+          </ul>
         </div>
       </div>
       <div class="role">
@@ -271,6 +309,13 @@
         <div>
           <h3>B.Tech, Computer Science and Engineering</h3>
           <p class="org">IIT (BHU), Varanasi</p>
+          <p>CGPA 8.46. IIT JEE All India Rank 481.</p>
+        </div>
+      </div>
+      <div class="role">
+        <div class="when">Certifications</div>
+        <div>
+          <p>Equity Research and Financial Modelling; Machine Learning (Stanford University); ML and Deep Learning with Applications to Engineering Systems (IIT Bombay); Google Data Analytics and Python.</p>
         </div>
       </div>
     </div>
@@ -287,6 +332,7 @@
       <button type="button" class="ctile" data-action="phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 0 0 6.5 6.5l1.5-2 4 1.5V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span>Call</span></button>
       <button type="button" class="ctile wa" data-action="whatsapp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg><span>WhatsApp</span></button>
       <button type="button" class="ctile" data-action="linkedin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7M8 7v.01M12 17v-7M12 13a3 3 0 0 1 6 0v4"/></svg><span>LinkedIn</span></button>
+      <a class="ctile" href="calendar/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>When I'm free</span></a>
     </div>
     <div class="creveal" id="creveal" hidden aria-live="polite"></div>
     <p class="fine">Kumar Ashwini, Lucknow</p>
