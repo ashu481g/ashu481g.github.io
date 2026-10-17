@@ -75,6 +75,27 @@ const CONTACT = {
     reveal(btn, "If your email app didn't open, write to:", addr);
   }
 
+  // Show each tile's detail inside it, so visitors don't have to click to see it.
+  // The phone number itself still appears only on click.
+  const details = {
+    "email-personal": email("personal"),
+    "email-college":  email("college"),
+    "phone":          "Click to show number",
+    "whatsapp":       "Chat with me",
+    "linkedin":       CONTACT.linkedin.replace(/^https:\/\/www\./, "")
+  };
+  document.querySelectorAll(".contact-tiles .ctile").forEach(tile => {
+    const text = details[tile.dataset.action] || (tile.matches('a[href="calendar/"]') ? "Next 7 days" : "");
+    if (!text) return;
+    // Allow line breaks only after "@" or "/", so addresses wrap cleanly on narrow tiles
+    const s = document.createElement("small");
+    text.split(/(?<=[@\/])/).forEach((part, i) => {
+      if (i) s.append(document.createElement("wbr"));
+      s.append(part);
+    });
+    tile.querySelector("span").append(s);
+  });
+
   document.querySelectorAll(".ctile[data-action]").forEach(btn =>
     btn.addEventListener("click", () => actions[btn.dataset.action](btn)));
 })();
