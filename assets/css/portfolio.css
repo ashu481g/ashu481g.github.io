@@ -317,7 +317,7 @@ section.block > .wrap > h2 {
 .ctile:hover { border-color: var(--steel); background: color-mix(in srgb, var(--rule) 45%, transparent); }
 .ctile svg { width: 1.4rem; height: 1.4rem; flex: none; color: var(--steel); }
 .ctile.wa svg { color: var(--petrol); }
-.ctile small { display: block; font-weight: 400; font-size: .82rem; color: var(--muted); }
+.ctile small { display: block; margin-top: .15rem; font-weight: 400; font-size: .82rem; color: var(--muted); overflow-wrap: break-word; }
 .creveal {
   max-width: 36rem;
   margin: 0 0 1.5rem;
