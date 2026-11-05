@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Orchard | Team Hellites</title>
+  <meta name="description" content="Team Hellites (IIM Lucknow) – Project Orchard recommendation for Alderbrook Beverage Company. Capstone Case Competition 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#summary">
+      <span class="brand-mark">H</span>
+      <span class="brand-text"><strong>Team Hellites</strong><small>IIM Lucknow · Project Orchard</small></span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#summary">Summary</a>
+      <a href="#diagnosis">Q1 Diagnosis</a>
+      <a href="#options">Q2 Options</a>
+      <a href="#value">Q3 Value</a>
+      <a href="#execution">Q4 Execution</a>
+      <a href="#ai">Q5 AI &amp; Data</a>
+      <a href="#appendix">Appendix</a>
+      <a href="#team">Team</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">◐</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== SUMMARY ===================== -->
+  <section id="summary" class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Capstone Case Competition 2026 · Recommendation to Elena Marsh &amp; the Alderbrook board</p>
+      <h1 id="heroTitle"></h1>
+      <p class="lede" id="heroLede"></p>
+
+      <div class="kpi-row" id="heroKpis"></div>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="assets/pdf/IIML_Hellites_Orchard.pdf" download>Download PDF summary</a>
+        <a class="btn" href="#value">Open the value simulator</a>
+      </div>
+
+      <div class="guide">
+        <h2 class="guide-title">Reviewer guide: the core solution in 10 minutes</h2>
+        <ol class="guide-list" id="guideList"></ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Q1 DIAGNOSIS ===================== -->
+  <section id="diagnosis" class="section">
+    <div class="wrap">
+      <p class="qtag">Question 1</p>
+      <h2 class="section-title">Alderbrook has scale but no innovation speed. Its portfolio is anchored in categories that are shrinking while functional drinks grow 12–15% a year.</h2>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Portfolio mix and growth (FY25)</h3>
+          <div class="chart-box"><canvas id="mixChart" aria-label="Alderbrook revenue mix and growth by category"></canvas></div>
+          <p class="source">Source: case data exhibit. 62% of revenue is in declining or flat juice and iced tea.</p>
+        </div>
+        <div class="card">
+          <h3>What is limiting growth</h3>
+          <ul class="issue-list" id="rootCauses"></ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>The FY29 gap: organic 2% growth vs the board's 5–6% ambition ($M)</h3>
+        <div class="grid-2 gap-grid">
+          <div class="chart-box"><canvas id="gapChart" aria-label="Organic revenue versus board target"></canvas></div>
+          <div class="gap-stats" id="gapStats"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>How changing consumer and retailer demand should shape priorities</h3>
+        <div class="priority-grid" id="priorities"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Q2 OPTIONS ===================== -->
+  <section id="options" class="section alt">
+    <div class="wrap">
+      <p class="qtag">Question 2</p>
+      <h2 class="section-title">Only Brightwater closes both the revenue gap and the functional gap. A structured deal keeps that upside while capping the downside.</h2>
+
+      <div class="table-scroll">
+        <table class="compare" id="optionTable"></table>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Weighted scoring: move the weights and see if the answer holds</h3>
+          <button class="btn btn-small" id="resetWeights" type="button">Reset weights</button>
+        </div>
+        <div class="grid-2">
+          <div id="weightSliders" class="slider-stack"></div>
+          <div class="chart-box tall"><canvas id="scoreChart" aria-label="Weighted option scores"></canvas></div>
+        </div>
+        <p class="source">Scores are 1 (poor) to 5 (strong) and are our team's judgment from the case facts and the model. Weights are normalised to 100%.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Q3 VALUE ===================== -->
+  <section id="value" class="section">
+    <div class="wrap">
+      <p class="qtag">Question 3</p>
+      <h2 class="section-title">The deal creates value only if synergies land and conventional velocity improves, so we pay for proof rather than for the forecast.</h2>
+
+      <div class="scenario-bar" role="group" aria-label="Scenario">
+        <span>Scenario:</span>
+        <button type="button" class="chip" data-scenario="bear">Bear</button>
+        <button type="button" class="chip active" data-scenario="base">Base</button>
+        <button type="button" class="chip" data-scenario="bull">Bull</button>
+        <span class="muted" id="scenarioNote"></span>
+      </div>
+
+      <div class="sim">
+        <div class="card sim-inputs">
+          <h3>Assumptions (drag to stress-test)</h3>
+          <div id="simSliders" class="slider-stack"></div>
+        </div>
+
+        <div class="sim-outputs">
+          <div class="kpi-row" id="simKpis"></div>
+
+          <div class="card">
+            <h3>FY29 run-rate EBITDA build ($M)</h3>
+            <div class="chart-box"><canvas id="bridgeChart" aria-label="Brightwater FY29 EBITDA build"></canvas></div>
+            <p class="source" id="breakevenNote"></p>
+          </div>
+
+          <div class="card">
+            <h3>Funding inside the leverage limits (net debt / EBITDA)</h3>
+            <div id="leverageMeters"></div>
+            <p class="source">Net debt $324M and EBITDA $270M (case). Integration spend is counted at close as a conservative test. The structured deal combines upfront cash/debt, seller and PE rollover equity, and a contingent earn-out.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Alternatives on the same basis (base case, $M)</h3>
+        <div class="table-scroll"><table class="compare" id="altTable"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Q4 EXECUTION ===================== -->
+  <section id="execution" class="section alt">
+    <div class="wrap">
+      <p class="qtag">Question 4</p>
+      <h2 class="section-title">Execution is gated: prove velocity before scaling, ring-fence the brand, and tie the earn-out to milestones.</h2>
+
+      <div class="timeline" id="timeline"></div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Questions to answer before signing</h3>
+          <ol class="question-list" id="keyQuestions"></ol>
+        </div>
+        <div class="card">
+          <h3>Risks and mitigations</h3>
+          <div class="table-scroll"><table class="compare compact" id="riskTable"></table></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>KPIs the board should track</h3>
+        <div class="kpi-grid" id="kpiGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Q5 AI ===================== -->
+  <section id="ai" class="section">
+    <div class="wrap">
+      <p class="qtag">Question 5</p>
+      <h2 class="section-title">Brightwater's trend engine combined with Alderbrook's outlet-level data becomes the company's growth engine, not just a route-planning tool.</h2>
+
+      <div class="usecase-grid" id="useCases"></div>
+
+      <div class="card">
+        <h3>Capabilities to acquire, build and partner for</h3>
+        <div class="cap-grid" id="capabilities"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== APPENDIX ===================== -->
+  <section id="appendix" class="section alt">
+    <div class="wrap">
+      <p class="qtag">Appendix</p>
+      <h2 class="section-title">Facts, assumptions and how we used AI</h2>
+
+      <div class="card">
+        <h3>Key inputs and their status</h3>
+        <div class="legend-row">
+          <span class="tag tag-fact">Case fact</span>
+          <span class="tag tag-assume">Team assumption</span>
+          <span class="tag tag-calc">Calculated</span>
+        </div>
+        <div class="table-scroll"><table class="compare compact" id="assumptionTable"></table></div>
+      </div>
+
+      <div class="card note">
+        <h3>How we used AI and validated it</h3>
+        <p id="aiNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TEAM ===================== -->
+  <section id="team" class="section">
+    <div class="wrap">
+      <p class="qtag">Team Hellites</p>
+      <h2 class="section-title">Team and documents</h2>
+      <div class="team-grid" id="teamGrid"></div>
+      <div class="card doc-card">
+        <div>
+          <h3>Submission summary</h3>
+          <p class="muted">IIML_Hellites_Orchard.pdf: our analysis and recommendation in brief.</p>
+        </div>
+        <a class="btn btn-primary" href="assets/pdf/IIML_Hellites_Orchard.pdf" download>Download PDF</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p>Team Hellites · IIM Lucknow · Project Orchard. All company names and figures are fictional case data. Real companies are referenced only as industry benchmarks.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
