@@ -391,8 +391,11 @@
     const tg = $("#teamGrid");
     D.team.forEach((m) => {
       const initials = m.name.split(" ").map((p) => p[0]).join("").slice(0, 2);
-      tg.appendChild(el("div", "member", `<div class="avatar">${initials}</div>
-        <div class="member-info"><h3>${m.name}</h3><p>${m.role} · ${m.roll}</p><p>${m.course}, ${m.college}</p></div>
+      const avatar = m.photo
+        ? `<img class="avatar avatar-photo" src="${m.photo}" alt="Photo of ${m.name}" width="72" height="72" loading="lazy">`
+        : `<div class="avatar">${initials}</div>`;
+      tg.appendChild(el("div", "member", `${avatar}
+        <div class="member-info"><h3>${m.name}</h3><p>${m.role} · ${m.roll}</p><p>${m.year}</p><p>${m.course}, ${m.college}</p></div>
         <a class="btn btn-small" href="${m.cv}" download>Download CV</a>`));
     });
   }
