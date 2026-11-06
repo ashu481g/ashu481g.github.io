@@ -206,9 +206,9 @@ const ORCHARD = {
 
   /* ---------- Team ---------- */
   team: [
-    { name: "Kumar Ashwini", roll: "PGP41426", college: "IIM Lucknow", course: "PGP (MBA)", year: "2nd Year MBA student", role: "Team Member",
+    { name: "Kumar Ashwini", roll: "PGP41426", college: "IIM Lucknow", role: "Team Member - Hellites", program: "IIM Lucknow – MBA, Class of 2027",
       photo: "assets/img/PGP41426.jpg", cv: "assets/cv/Kumar_Ashwini_PGP41426_CV.pdf" },
-    { name: "Pankaj Goswami", roll: "PGP41434", college: "IIM Lucknow", course: "PGP (MBA)", year: "2nd Year MBA student", role: "Team Member",
+    { name: "Pankaj Goswami", roll: "PGP41434", college: "IIM Lucknow", role: "Team Member - Hellites", program: "IIM Lucknow – MBA, Class of 2027",
       photo: "assets/img/PGP41434.jpg", cv: "assets/cv/Pankaj_Goswami_PGP41434_CV.pdf" }
   ]
 };

@@ -395,7 +395,7 @@
         ? `<img class="avatar avatar-photo" src="${m.photo}" alt="Photo of ${m.name}" width="72" height="72" loading="lazy">`
         : `<div class="avatar">${initials}</div>`;
       tg.appendChild(el("div", "member", `${avatar}
-        <div class="member-info"><h3>${m.name}</h3><p>${m.role} · ${m.roll}</p><p>${m.year}</p><p>${m.course}, ${m.college}</p></div>
+        <div class="member-info"><h3>${m.name} (${m.roll})</h3><p>${m.role}</p><p>${m.program}</p></div>
         <a class="btn btn-small" href="${m.cv}" download>Download CV</a>`));
     });
   }
