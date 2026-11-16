@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIGFi Finance Primers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <div>
+      <p class="kicker">SIGFi primer series · Hinglish lectures</p>
+      <h1>Finance Primers</h1>
+    </div>
+    <div class="progress" aria-live="polite">
+      <span class="progress-count" id="progress-count">0 / 7</span>
+      <span class="progress-label">watched</span>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage" aria-labelledby="now-title">
+      <div class="player">
+        <iframe id="player" title="Lecture video" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+
+      <div class="now">
+        <div class="now-text">
+          <p class="now-meta" id="now-meta"></p>
+          <h2 id="now-title"></h2>
+          <p class="now-topics" id="now-topics"></p>
+        </div>
+        <div class="controls">
+          <button type="button" id="btn-prev" class="btn">Previous</button>
+          <button type="button" id="btn-next" class="btn">Next</button>
+          <button type="button" id="btn-done" class="btn btn-primary" aria-pressed="false">Mark as watched</button>
+          <a id="open-drive" class="btn btn-link" target="_blank" rel="noopener">Open in Google Drive</a>
+        </div>
+      </div>
+    </section>
+
+    <aside class="schedule" aria-labelledby="schedule-title">
+      <div class="schedule-head">
+        <h2 id="schedule-title">Weekly schedule</h2>
+        <button type="button" id="btn-today" class="btn btn-small">Go to today</button>
+      </div>
+      <ol class="lectures" id="lectures"></ol>
+      <p class="note">One primer per weekday. Watched marks are saved in this browser only.</p>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
