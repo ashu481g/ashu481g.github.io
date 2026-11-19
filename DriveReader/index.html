@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1f2933">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Drive PDF Reader</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+
+  <!-- Sign-in screen -->
+  <section id="signin" class="view signin">
+    <div class="card">
+      <div class="logo">📚</div>
+      <h1>Drive PDF Reader</h1>
+      <p>Browse your Google Drive and read PDFs right here.</p>
+      <button id="signinBtn" class="primary" type="button">Sign in with Google</button>
+      <p id="signinMsg" class="msg"></p>
+    </div>
+  </section>
+
+  <!-- Drive browser -->
+  <section id="browser" class="view" hidden>
+    <header class="bar">
+      <h1 class="brand">Drive PDFs</h1>
+      <form id="searchForm" class="search" role="search">
+        <input id="searchInput" type="search" placeholder="Search PDFs and folders"
+               enterkeyhint="search" autocomplete="off">
+      </form>
+      <button id="signoutBtn" class="ghost" type="button">Sign out</button>
+    </header>
+
+    <nav class="tabs">
+      <button type="button" data-tab="drive">My Drive</button>
+      <button type="button" data-tab="shared">Shared with me</button>
+      <button type="button" data-tab="recent">Recent</button>
+    </nav>
+
+    <nav id="crumbs" class="crumbs"></nav>
+    <button id="resume" class="resume" type="button" hidden></button>
+    <ul id="list" class="list"></ul>
+    <p id="status" class="status"></p>
+    <button id="more" class="more" type="button" hidden>Load more</button>
+  </section>
+
+  <!-- PDF viewer -->
+  <section id="viewer" class="view viewer" hidden>
+    <header class="bar vbar">
+      <button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button>
+      <h2 id="docTitle" class="doc-title"></h2>
+      <div class="pager">
+        <input id="pageInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Page">
+        <span>/</span><span id="pageCount">–</span>
+      </div>
+      <div class="tools">
+        <button id="zoomOut" class="icon-btn" type="button" aria-label="Zoom out">−</button>
+        <button id="fitBtn" class="chip" type="button" title="Fit to width"><span id="zoomLabel">Fit</span></button>
+        <button id="zoomIn" class="icon-btn" type="button" aria-label="Zoom in">+</button>
+        <button id="nightBtn" class="icon-btn" type="button" aria-label="Night mode">☾</button>
+        <button id="fsBtn" class="icon-btn" type="button" aria-label="Full screen">⛶</button>
+        <a id="driveLink" class="icon-btn" target="_blank" rel="noopener" aria-label="Open in Google Drive">↗</a>
+      </div>
+    </header>
+    <div class="progress"><div id="progressBar"></div></div>
+    <p id="vStatus" class="vstatus"></p>
+    <main id="pages"><div id="pageWrap"></div></main>
+  </section>
+
+  <div id="reconnect" class="toast" hidden>
+    Google session expired.
+    <button id="reconnectBtn" type="button">Reconnect</button>
+  </div>
+
+</body>
+</html>
