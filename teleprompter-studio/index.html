@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teleprompter Studio</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- Teleprompter strip: sits at the top, right under your webcam -->
+    <section class="prompter" id="prompter">
+      <div class="prompter-scroll" id="prompterScroll">
+        <div class="prompter-text" id="prompterText"></div>
+        <div class="prompter-tail"></div>
+      </div>
+      <div class="reading-mark" aria-hidden="true">▶</div>
+      <div class="prompter-status">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="prompterStatus">Prompter idle</span>
+        <span class="heard" id="heardText"></span>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <main class="stage">
+        <div class="preview-wrap" id="previewWrap">
+          <canvas id="preview"></canvas>
+          <div class="placeholder" id="placeholder">
+            <p>Camera is off</p>
+            <button class="btn primary" id="placeholderStart">Start camera</button>
+          </div>
+          <div class="rec-badge hidden" id="recBadge"><span class="dot"></span><span id="recTime">00:00</span></div>
+          <div class="countdown hidden" id="countdown">3</div>
+          <div class="model-badge hidden" id="modelBadge">Loading background model…</div>
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="camBtn">Start camera</button>
+          <button class="btn rec" id="recBtn" disabled>
+            <span class="rec-icon"></span><span class="label">Record</span>
+          </button>
+          <button class="btn" id="listenBtn">🎙 Start prompter</button>
+          <button class="btn" id="resetBtn" title="Back to the first word (Home)">⟲ Top</button>
+          <button class="btn" id="editBtn">✎ Edit script</button>
+        </div>
+        <p class="hint">
+          Shortcuts: <kbd>R</kbd> record/stop · <kbd>L</kbd> prompter on/off ·
+          <kbd>←</kbd>/<kbd>→</kbd> move one word · <kbd>Home</kbd> back to top · click any word to jump there
+        </p>
+      </main>
+
+      <aside class="panel">
+        <section class="card">
+          <h2>Background</h2>
+          <div class="bg-grid" id="bgGrid">
+            <button class="bg-opt active" data-bg="none"><span class="sw sw-none"></span>None</button>
+            <button class="bg-opt" data-bg="blur"><span class="sw sw-blur"></span>Blur</button>
+            <button class="bg-opt" data-bg="color"><span class="sw sw-color" id="colorSwatch"></span>Colour</button>
+            <!-- preset buttons are added by app.js -->
+            <button class="bg-opt" data-bg="upload"><span class="sw sw-upload" id="uploadSwatch">＋</span>Your image</button>
+          </div>
+          <input type="file" id="bgFile" accept="image/*" hidden>
+          <label class="row" id="blurRow">Blur strength
+            <input type="range" id="blurAmt" min="4" max="30" value="14">
+          </label>
+          <label class="row" id="colorRow">Colour
+            <input type="color" id="bgColor" value="#1d3557">
+          </label>
+        </section>
+
+        <section class="card">
+          <h2>Teleprompter</h2>
+          <label class="row">Text size
+            <input type="range" id="fontSize" min="22" max="80" value="40">
+          </label>
+          <label class="row">Prompter height
+            <input type="range" id="prompterHeight" min="18" max="55" value="30">
+          </label>
+          <label class="row">Speech language
+            <select id="lang">
+              <option value="en-IN">English (India)</option>
+              <option value="en-US">English (US)</option>
+              <option value="en-GB">English (UK)</option>
+              <option value="hi-IN">Hindi</option>
+            </select>
+          </label>
+          <label class="check"><input type="checkbox" id="listenWithRec" checked> Start prompter when recording starts</label>
+          <label class="check"><input type="checkbox" id="restartOnTake" checked> Go back to the top for each new take</label>
+        </section>
+
+        <section class="card">
+          <h2>Video</h2>
+          <label class="row">Camera <select id="camSelect"><option value="">Default</option></select></label>
+          <label class="row">Microphone <select id="micSelect"><option value="">Default</option></select></label>
+          <label class="row">Resolution
+            <select id="resolution">
+              <option value="1280x720">720p (1280×720)</option>
+              <option value="1920x1080">1080p (1920×1080)</option>
+              <option value="640x480">480p (640×480)</option>
+            </select>
+          </label>
+          <label class="check"><input type="checkbox" id="mirror" checked> Mirror preview (recording is not mirrored)</label>
+          <label class="check"><input type="checkbox" id="countdownOn" checked> 3-second countdown before recording</label>
+          <label class="check"><input type="checkbox" id="autoDownload"> Download each take automatically</label>
+        </section>
+
+        <section class="card">
+          <h2>Takes <span class="muted" id="takeCount"></span></h2>
+          <ul class="takes" id="takes"><li class="muted empty">No recordings yet.</li></ul>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <dialog id="scriptDialog">
+    <form method="dialog" class="dialog-body">
+      <h2>Your script</h2>
+      <p class="muted">Paste or type what you want to say. Leave a blank line between paragraphs.</p>
+      <textarea id="scriptInput" spellcheck="true"></textarea>
+      <div class="dialog-actions">
+        <span class="muted" id="wordCount"></span>
+        <button class="btn" value="cancel">Cancel</button>
+        <button class="btn primary" value="save" id="saveScript">Use this script</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <!-- Camera feed; drawn onto the canvas, never shown directly -->
+  <video id="video" class="offscreen" playsinline muted></video>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
